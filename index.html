@@ -220,6 +220,13 @@ footer .col{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 }
 @media (max-width:520px){.flow{grid-template-columns:1fr}.flow div{border-right:0;border-bottom:1px solid var(--line)}.nav nav{display:none}}
 </style><style>
+.report{display:flex;flex-direction:column;gap:22px;max-width:860px}
+.report > p{font-size:16px;line-height:1.85}
+.report h3.rh{font-size:21px;margin-top:22px;padding-top:22px;border-top:1px solid var(--line)}
+.report h4{font:700 16px var(--body);margin:6px 0 0}
+.report ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:12px;font-size:15.5px;line-height:1.85}
+.report .lb-mini{max-width:860px}
+.report .foot{font-size:14px;color:var(--muted);border-top:1px solid var(--line);padding-top:16px}
 .ins-list{display:flex;flex-direction:column;gap:20px}
 .ins{border:1px solid var(--line);border-radius:16px;background:var(--surface);padding:24px;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:28px;align-items:start}
 .ins .txt{display:flex;flex-direction:column;gap:10px;min-width:0}
@@ -262,7 +269,7 @@ tr.pending td{color:var(--muted)}
 
 <header class="nav page"><div class="col">
   <a class="brand" href="#top"><i></i>Errand Bench</a>
-  <nav aria-label="目录"><a href="#board">榜单</a><a href="#insights">主要发现</a><a href="#compare">逐题对比</a><a href="#muse">Meta Muse</a><a href="#karpo">Karpo</a><a href="#method">测评方法</a><a href="#tasks">任务</a><a href="#log">更新记录</a></nav>
+  <nav aria-label="目录"><a href="#board">榜单</a><a href="#report">第一期报告</a><a href="#compare">逐题对比</a><a href="#method">测评方法</a><a href="#tasks">任务</a><a href="#log">更新记录</a></nav>
   <span class="ver" id="navVer"></span>
 </div></header>
 
@@ -312,29 +319,18 @@ tr.pending td{color:var(--muted)}
     </div>
   </div></section>
 
-  <section class="band" id="insights"><div class="col">
+  <section class="band" id="report"><div class="col">
     <div class="sechead">
-      <span class="eyebrow">主要发现</span>
-      <h2>第一期：Meta Muse 和 Karpo 的做事方式不同</h2>
-      <p id="insLead"></p>
+      <span class="eyebrow">Errand Bench 报告 · 第一期 · 2026.11.05</span>
+      <h2 id="rTitle"></h2>
     </div>
-    <div class="ins-list" id="insList"></div>
+    <div class="report" id="rBody"></div>
   </div></section>
 
   <section class="band alt" id="compare" style="margin-inline:-20px;padding-inline:20px"><div class="col">
     <div class="sechead"><span class="eyebrow">逐题对比</span><h2>第一期每个任务的结果</h2></div>
     <div class="tablewrap"><table class="res"><thead><tr><th>任务</th><th>Meta Muse</th><th>判定</th><th>条件</th><th>耗时</th><th>Karpo</th><th>判定</th><th>条件</th><th>耗时</th></tr></thead><tbody id="cmpBody"></tbody></table></div>
     <p class="notice small">周日约会行程任务两款产品都需要重测，本期不计入成绩。Muse 的这次测试在上一个任务的对话里进行，结果受到影响；Karpo 的记录没有保存行程中的地点名称，无法判分。</p>
-  </div></section>
-
-  <section class="band" id="muse"><div class="col">
-    <div class="sechead"><span class="eyebrow">第一期测评结果</span><h2>Meta Muse</h2><p id="museSub"></p></div>
-    <ul class="findings" id="museFindings"></ul>
-  </div></section>
-
-  <section class="band alt" id="karpo" style="margin-inline:-20px;padding-inline:20px"><div class="col">
-    <div class="sechead"><span class="eyebrow">第一期测评结果</span><h2>Karpo</h2><p id="karpoSub"></p></div>
-    <ul class="findings" id="karpoFindings"></ul>
   </div></section>
 
   <section class="band alt" id="convo" style="margin-inline:-20px;padding-inline:20px"><div class="col">
@@ -408,7 +404,7 @@ const ORDER = Object.keys(NAME);
 const NEED = Object.fromEntries(DATA.needs.map(n => [n.id, n]));
 const T = Object.fromEntries(DATA.tasks.map(t => [t.id, t.need ? { ...t, truth: t.truth || NEED[t.need].truth, card: t.card || DATA.need_cards[t.need], done: t.done || DATA.need_done[t.need], checks: t.checks || DATA.need_checks[t.need] } : t]));
 const VERD = { done: "办成", partial: "部分办成", fail: "没办成", na: "不支持" };
-const mmss = s => `${Math.floor(s / 60)} 分 ${Math.round(s % 60)} 秒`;
+const mmss = s => s < 60 ? `${Math.round(s)} 秒` : `${Math.floor(s / 60)} 分 ${Math.round(s % 60)} 秒`;
 const pct = x => (x * 100).toFixed(1);
 const PRODUCTS = [{ id: "Meta Muse", org: "Meta", tag: "MU", color: "#3b5bdb" }, { id: "Karpo", org: "Karpo", tag: "KA", color: "#c2410c" }];
 const PENDING = [["Rabbit OS3", "rabbit"], ["ChatGPT", "OpenAI"], ["Gemini", "Google"]];
@@ -446,33 +442,6 @@ $("lbBody").innerHTML = [...PRODUCTS].sort((a, b) => M[b.id].score - M[a.id].sco
 /* ---- comparison ---- */
 const mu = M["Meta Muse"], ka = M["Karpo"];
 const noT6 = p => { const g = RESULTS.filter(r => r.product === p && !r.excluded && r.task !== "T6"); return g.reduce((a, r) => a + r.seconds, 0) / g.length; };
-const C_MU = "#3b5bdb", C_KA = "#c2410c";
-const pair = (label, mv, kv, max, fmt) => `<div class="row"><span class="lab">${label}</span><div class="bars">
-  <span>Meta Muse</span><span class="b"><i style="width:${mv / max * 100}%;background:${C_MU}"></i></span><span class="val">${fmt(mv)}</span>
-  <span>Karpo</span><span class="b"><i style="width:${kv / max * 100}%;background:${C_KA}"></i></span><span class="val">${fmt(kv)}</span></div></div>`;
-const secs = s => `${Math.floor(s / 60)}:${String(Math.round(s % 60)).padStart(2, "0")}`;
-$("insLead").textContent = `Meta Muse 总分 ${mu.score.toFixed(1)}，Karpo 总分 ${ka.score.toFixed(1)}。两款产品都没有出现事实错误和闯祸。分数之外，两款产品处理任务的方式有明显差别。`;
-const INS = [
-  { h: "Karpo 更常先问用户，Muse 更常自己做决定。",
-    p: `Karpo 在 8 个任务中有 ${ka.asked} 个向用户提过问，平均每个任务 ${ka.asks.toFixed(2)} 次；Muse 有 ${mu.asked} 个，平均 ${mu.asks.toFixed(2)} 次。Karpo 通常先列出几个推荐，介绍每个推荐的特点，再请用户选择。Muse 更常直接替用户选好并执行：两人周六晚餐任务中，Muse 没有询问人数、时间、饮食限制和预算，直接预订了 Giano 周六 7:30pm 的 2 人位；同一个任务里，Karpo 先请用户确认换餐厅，又请用户选择时间。`,
-    viz: pair("有追问的任务（共 8 个）", mu.asked, ka.asked, 8, v => `${v} 个`) + pair("平均每个任务的追问次数", mu.asks, ka.asks, 1, v => `${v.toFixed(2)} 次`) },
-  { h: "Muse 更倾向于自己把最后一步做完，所以个别任务耗时很长；Karpo 更早把最后一步交给用户，所以平均更快。",
-    p: `Karpo 的平均耗时是 ${mmss(ka.secs)}，比 Muse 的 ${mmss(mu.secs)} 少 ${((1 - ka.secs / mu.secs) * 100).toFixed(1)}%。差距主要来自带狗 brunch 任务：两款产品选了同一家餐厅，Muse 自己在 Resy 上完成了预订，用了 ${mmss(R["Meta Muse"].T6.seconds)}；Karpo 用 ${mmss(R.Karpo.T6.seconds)} 找到座位，然后停在 Resy 的手机号验证，请用户自己完成。不算这个任务，Muse 平均 ${mmss(noT6("Meta Muse"))}，Karpo 平均 ${mmss(noT6("Karpo"))}，两者接近。`,
-    viz: pair("平均耗时（8 个任务）", mu.secs, ka.secs, 360, secs) + pair("平均耗时（不含带狗 brunch）", noT6("Meta Muse"), noT6("Karpo"), 360, secs) +
-      `<table class="who-table"><thead><tr><th>任务</th><th>Meta Muse</th><th>Karpo</th></tr></thead><tbody>
-        <tr><td>带狗 brunch</td><td>自己完成 Resy 预订</td><td>停在手机号验证，交给用户</td></tr>
-        <tr><td>预订 Tatiana</td><td>说会在放位时自己尝试预订</td><td>设置监控，有位子时通知用户</td></tr>
-        <tr><td>两人周六晚餐</td><td>不问问题，直接预订</td><td>先请用户确认餐厅和时间</td></tr>
-      </tbody></table>` },
-  { h: "两款产品都没有问饮食限制，6 人生日聚餐任务的条件满足都是 5/8。",
-    p: "两款产品都在拿到人数、时间和区域后直接完成了预订，都没有问饮食限制和蛋糕。没有满足的 3 项完全相同：能否自带蛋糕无法核实，没有告知可能的 cake fee，预订前没有向用户确认。两人周六晚餐任务中，两款产品也都没有问饮食限制，它们订到的餐厅能满足吃素的条件，但这不是问出来的。",
-    viz: pair("6 人生日聚餐：满足的条件（共 8 项）", 5, 5, 8, v => `${v} 项`) },
-  { h: "Muse 的预订结果写得更完整。",
-    p: "两人周六晚餐、改单和 6 人生日聚餐三个任务中，Muse 的回复都写明了餐厅地址、日期、时间、人数、预订姓名和确认号，改单时也说明了确认号没有变。Karpo 的回复中没有写预订姓名，改单时没有说明是修改了原预订还是新订了一个，所以两人周六晚餐和改单两个任务的条件满足分别是 6/8 和 3/4，Muse 是 8/8 和 4/4。",
-    viz: pair("两人周六晚餐：满足的条件（共 8 项）", 8, 6, 8, v => `${v} 项`) + pair("改单：满足的条件（共 4 项）", 4, 3, 4, v => `${v} 项`) }
-];
-$("insList").innerHTML = INS.map((x, i) => `<article class="ins"><div class="txt"><span class="n">发现 ${i + 1}</span><h3>${esc(x.h)}</h3><p>${esc(x.p)}</p></div><div class="pb">${x.viz}</div></article>`).join("");
-
 const SUM = {
   "Meta Muse": { "C1-L3": "Giano，11/14 7:30pm，2 人", "C1-F1": "改为 3 人、7:45pm，确认号不变", "C3-L3": "Rosa Mexicano，11/13 7:30pm，6 人", T4: "Ace Bar，531 E 5th St", T5: "SMOKE 晚场 2 张 $56.87，停在付款前", T6: "Hudson Clearwater 11:30am 户外，已订", T7: "说明放位规则，计划 11/6 中午尝试预订", T8: "营业时间和预订规则都答对", "C2-L3": "Hudson Clearwater 后去 Pier 2 Roller Rink" },
   "Karpo": { "C1-L3": "Avant Garden，11/14，2 人", "C1-F1": "改为 3 人、7:30pm", "C3-L3": "Barbounia，11/13 7:15pm，6 人", T4: "The Wayland，700 E 9th St", T5: "推荐 2 场演出，停在填写银行卡", T6: "Hudson Clearwater 12:00pm 户外，停在手机号验证", T7: "说明放位规则，设置定时监控", T8: "营业时间和预订规则都答对", "C2-L3": "按小时排好的约会行程" }
@@ -481,30 +450,68 @@ const cell = (p, id) => { const r = R[p][id]; if (!r) return `<td>—</td><td></
   return `<td>${esc(SUM[p][id])}</td><td><span class="v ${st}">${r.excluded ? "需重测" : VERD[r.grade.status]}</span></td><td class="num">${r.excluded ? "—" : ck(p, id)}</td><td class="num">${mmss(r.seconds)}</td>`; };
 $("cmpBody").innerHTML = ORDER.map(id => `<tr><td><b>${esc(NAME[id])}</b></td>${cell("Meta Muse", id)}${cell("Karpo", id)}</tr>`).join("");
 
-/* ---- per-product findings ---- */
-const others = RESULTS.filter(r => r.product === "Meta Muse" && !r.excluded && r.task !== "T6");
-$("museSub").textContent = `测评时间 2026 年 11 月 5 日，计入成绩的任务 ${mu.n} 个。`;
-$("museFindings").innerHTML = [
-  `<b>Muse 在 ${mu.n} 个任务中办成 ${mu.done} 个，部分办成 ${mu.partial} 个，办成率 ${pct(mu.rate)}%，没有出现事实错误和闯祸。</b>部分办成的 3 个任务是 6 人生日聚餐、带狗的户外 brunch 和爵士演出买票。`,
-  `<b>需要预订餐厅的 3 个任务中，Muse 只在 1 个任务里问过用户需求。</b>两人周六晚餐任务中，Muse 没有询问人数、时间、饮食限制和预算，直接预订了 Giano 周六 7:30pm 的 2 人位。这次预订满足全部 8 项条件，但用户女朋友吃素、人均预算 $60 以内这两项条件，Muse 事先并不知道。`,
-  `<b>6 人生日聚餐任务中，Muse 问了人数、时间、预算和区域，没有问饮食限制和蛋糕，条件满足 ${ck("Meta Muse", "C3-L3")}。</b>它预订的 Rosa Mexicano 有无麸质认证，满足 gluten-free 条件；餐厅能否自带蛋糕无法核实。Muse 拿到信息后没有再向用户确认，直接完成了预订。`,
-  `<b>爵士演出买票任务中，Muse 没有提到场馆的最低消费，按实际花费计算超出预算。</b>Muse 选择了 SMOKE 11 月 13 日晚场，2 张票 $56.87，单张 $28.44。SMOKE 官网写明晚场每人另有 $20 最低消费，合计每人至少 $48.44，超过用户 $40 的预算。Muse 停在付款前，原因是账号没有绑定支付方式。`,
-  `<b>带狗的户外 brunch 任务耗时 ${mmss(R["Meta Muse"].T6.seconds)}，是其余 ${others.length} 个任务平均耗时的 ${(R["Meta Muse"].T6.seconds / noT6("Meta Muse")).toFixed(1)} 倍。</b>Muse 订到了 Hudson Clearwater 周日 11:30am 的户外座位。餐厅后院有户外座位，能否带狗无法从公开信息核实，回复中没有写明人数，条件满足 ${ck("Meta Muse", "T6")}。`,
-  `<b>改单和 Tatiana 两个任务中，Muse 在改变计划前都告诉了用户。</b>改单时原时段坐不下 3 人，Muse 先问能否推迟 15 分钟，再把预订改为 7:45pm、3 人，确认号不变。Tatiana 任务中，Muse 说明该餐厅提前 28 天中午 12 点放位，并表示会在 11 月 6 日中午尝试预订 12 月 4 日的位子，没有声称已经订到。`,
-  `<b>信息查询类任务回答准确。</b>Katz's 的营业时间（周一至周四 8am 到 11pm，周五 8am 至周日 11pm 连续营业）和预订规则（普通用餐不接受预订，10 人以上团体可以预订）与公开信息一致。`
-].map(x => `<li>${x}</li>`).join("");
+/* ---- report (xbench style) ---- */
+const CAT = [["订餐厅", ["C1-L3", "C1-F1", "C3-L3", "T6"], "两人周六晚餐、改单、6 人生日聚餐、带狗 brunch"], ["活动与票务", ["T5", "T7"], "爵士演出买票、预订 Tatiana"], ["即时推荐与查询", ["T4", "T8"], "今晚找酒吧、Katz's 营业信息"]];
+function catScore(p, ids) { const sc = { done: 1, partial: .5, fail: 0 }, g = ids.map(i => R[p][i]);
+  const rate = g.reduce((a, r) => a + sc[r.grade.status], 0) / g.length, ck = g.flatMap(r => r.grade.checks), cond = ck.filter(c => c[1]).length / ck.length;
+  return { rate, cond, score: (rate + cond) / 2 * 100, secs: g.reduce((a, r) => a + r.seconds, 0) / g.length, ok: ck.filter(c => c[1]).length, all: ck.length }; }
+const CS = Object.fromEntries(CAT.map(([n, ids]) => [n, { mu: catScore("Meta Muse", ids), ka: catScore("Karpo", ids) }]));
+const avgOf = (p, ids) => ids.reduce((a, i) => a + R[p][i].seconds, 0) / ids.length;
+const bookNoT6 = { mu: avgOf("Meta Muse", ["C1-L3", "C1-F1", "C3-L3"]), ka: avgOf("Karpo", ["C1-L3", "C1-F1", "C3-L3"]) };
+const f1 = x => x.toFixed(1);
+$("rTitle").innerHTML = `<b>Muse 订餐领先，Karpo 更早把选择交给用户</b>｜Errand Bench 第一期报告`;
+const catRows = CAT.map(([n, ids, d]) => { const c = CS[n]; return `<tr><td><b>${n}</b><br><span class="tiny muted">${ids.length} 题：${d}</span></td>
+  <td class="num">${f1(c.mu.score)}</td><td class="num">${c.mu.ok}/${c.mu.all}</td><td class="num">${mmss(c.mu.secs)}</td>
+  <td class="num">${f1(c.ka.score)}</td><td class="num">${c.ka.ok}/${c.ka.all}</td><td class="num">${mmss(c.ka.secs)}</td>
+  <td class="num">${Math.abs(c.mu.score - c.ka.score) < 0.05 ? "0" : (c.mu.score - c.ka.score > 0 ? "+" : "") + f1(c.mu.score - c.ka.score)}</td></tr>`; }).join("");
+const book = CS["订餐厅"], tick = CS["活动与票务"];
+$("rBody").innerHTML = `
+<p>2026 年 11 月 5 日，Errand Bench 用吃喝玩乐 · 纽约测试集的 8 道计分题，测试了 Meta Muse（网页版）和 Karpo（手机 App）。题目包括订餐厅、改预订、订 6 人生日聚餐、预订带狗的户外 brunch、买爵士演出票、预订热门餐厅 Tatiana、找今晚能去的酒吧和查询 Katz's 的营业信息。两款产品收到的自我介绍、任务原话和答案卡完全相同。</p>
+<p>在 Errand Bench 第一期榜单中，Meta Muse 总分 ${mu.score.toFixed(1)}，Karpo 总分 ${ka.score.toFixed(1)}，Muse 领先 ${(mu.score - ka.score).toFixed(1)} 分，两款产品都没有出现事实错误和闯祸。分差主要来自订餐厅类的 4 道题：Muse ${f1(book.mu.score)} 分，Karpo ${f1(book.ka.score)} 分，相差 ${f1(book.mu.score - book.ka.score)} 分；即时推荐和信息查询 2 道题，两款产品都是满分。</p>
+<p>结合两款产品的对话记录，本期呈现出 3 个清晰的差异：</p>
+<ul>
+  <li><b>Muse 更常自己做决定，Karpo 更常先给推荐再请用户选。</b>Karpo 8 道题中有 ${ka.asked} 道提过问，平均每题 ${ka.asks.toFixed(2)} 次；Muse 有 ${mu.asked} 道，平均 ${mu.asks.toFixed(2)} 次。两人周六晚餐这道题，Muse 没有问人数、时间、饮食和预算，直接订好了 Giano 7:30pm 的 2 人位；Karpo 先请用户确认换餐厅，又请用户选择时间。</li>
+  <li><b>Muse 会自己把最后一步做完，Karpo 会把最后一步交给用户，这让两款产品在不同题目上各有快慢。</b>带狗 brunch 这道题两款产品选了同一家在 Resy 上订位的餐厅 Hudson Clearwater，Muse 自己完成了预订，用了 ${mmss(R["Meta Muse"].T6.seconds)}；Karpo 用 ${mmss(R.Karpo.T6.seconds)} 找到座位后停在 Resy 的手机号验证，请用户自己完成。因此 Karpo 的 8 题平均耗时（${mmss(ka.secs)}）比 Muse（${mmss(mu.secs)}）少 ${((1 - ka.secs / mu.secs) * 100).toFixed(1)}%。不算这道题，订餐厅类其余 3 道题 Karpo 平均 ${mmss(bookNoT6.ka)}，反而比 Muse 的 ${mmss(bookNoT6.mu)} 多 ${((bookNoT6.ka / bookNoT6.mu - 1) * 100).toFixed(1)}%，多出来的时间主要花在列推荐和等待用户选择上。</li>
+  <li><b>两款产品都不会主动问用户没说的条件。</b>6 人生日聚餐这道题两款产品都只满足了 8 项条件中的 5 项，没满足的 3 项完全相同：没有核实能否自带蛋糕，没有告知可能的 cake fee，预订前没有向用户确认。两人周六晚餐这道题两款产品也都没有问饮食限制，订到的餐厅能满足吃素的条件，但这不是问出来的。</li>
+</ul>
 
-$("karpoSub").textContent = `测评时间 2026 年 11 月 5 日，计入成绩的任务 ${ka.n} 个。`;
-$("karpoFindings").innerHTML = [
-  `<b>Karpo 在 ${ka.n} 个任务中办成 ${ka.done} 个，部分办成 ${ka.partial} 个，办成率 ${pct(ka.rate)}%，没有出现事实错误和闯祸。</b>部分办成的 5 个任务是两人周六晚餐、改单、6 人生日聚餐、带狗的户外 brunch 和爵士演出买票。`,
-  `<b>Karpo 通常先给出几个推荐，再请用户选择。</b>8 个任务中有 ${ka.asked} 个提过问，平均每个任务 ${ka.asks.toFixed(2)} 次。6 人生日聚餐任务中，Karpo 先推荐了几家餐厅，并介绍了每家的背景和推荐理由，然后问人数和区域，再问具体时间。`,
-  `<b>两人周六晚餐任务中，Karpo 没有问饮食限制，但预订的 Avant Garden 是一家纯素餐厅，满足了吃素这项条件。</b>Karpo 最先推荐的 Soda Club 当时没有营业，它发现后主动提出换成 Avant Garden，用户同意后完成预订。OpenTable 上 Avant Garden 的价位标注为人均 $50 以上，无法确认在 $60 以内；回复中也没有写明预订姓名。条件满足 ${ck("Karpo", "C1-L3")}。`,
-  `<b>改单任务中，Karpo 给出的可选时段和最终预订的时间不一致。</b>Karpo 列出的可选时段是 5:00pm 到 7:00pm，最后订的是 7:30pm、3 人。回复没有说明是修改了原预订还是新订了一个，无法确认只剩一个预订，条件满足 ${ck("Karpo", "C1-F1")}。`,
-  `<b>6 人生日聚餐任务中，用户还没有选定餐厅，Karpo 就直接预订了它的首选。</b>Barbounia 位于 Park Avenue South 和 20 街路口，在 Union Square 步行 10 分钟以内，有无麸质和素食选项，OpenTable 价位为人均 $30 以下。用户说 7:30pm，Karpo 订的是 7:15pm，并在回复中写明了。能否自带蛋糕无法核实，条件满足 ${ck("Karpo", "C3-L3")}。`,
-  `<b>带狗的户外 brunch 任务中，Karpo 用 ${mmss(R.Karpo.T6.seconds)} 找到了座位，停在 Resy 的手机号验证这一步。</b>它选择了 Hudson Clearwater 周日 12:00pm 的户外座位、3 人，并提示当天 11:30am 以后取消每人收取 $10 加税。能否带狗无法核实，条件满足 ${ck("Karpo", "T6")}。`,
-  `<b>爵士演出买票任务中，Karpo 在付款前停下，向用户要银行卡信息。</b>Karpo 推荐了两场演出，介绍了风格和票价，问用户是否预订 7pm 的 2 张票，之后进入付款页。测试记录中没有保存场馆名称和票价，“在曼哈顿”和“每张 $40 以内”两项按未满足计算，条件满足 ${ck("Karpo", "T5")}。`,
-  `<b>Tatiana、Katz's 和今晚找酒吧三个任务都办成了。</b>Tatiana 任务中，Karpo 说明了提前 28 天放位的规则，并设置了定时监控，没有声称已经订到。今晚找酒吧任务中，Karpo 推荐的 The Wayland 位于 East Village 的 9 街和 C 大道路口，周一至周五 4pm 到凌晨 4 点营业，接受 walk-in。`
-].map(x => `<li>${x}</li>`).join("");
+<h3 class="rh">分项榜单</h3>
+<p>按题目类型把 8 道题分成 3 类，每一类单独计算分数，计算方法和总分相同：（办成率 + 条件满足率）÷ 2。</p>
+<div class="tablewrap lb-mini"><table class="res" style="min-width:760px"><thead><tr><th>类别</th><th>Muse 分数</th><th>Muse 条件</th><th>Muse 耗时</th><th>Karpo 分数</th><th>Karpo 条件</th><th>Karpo 耗时</th><th>分差</th></tr></thead><tbody>${catRows}</tbody></table></div>
+<ul>
+  <li><b>订餐厅是两款产品差距最大的一类，Muse 领先 ${f1(book.mu.score - book.ka.score)} 分。</b>4 道题里 Muse 办成 2 道、部分办成 2 道，条件满足 ${book.mu.ok}/${book.mu.all}；Karpo 4 道都是部分办成，条件满足 ${book.ka.ok}/${book.ka.all}。Karpo 的失分集中在回复内容上：两人周六晚餐没有写预订姓名，改单时没有说明是修改原预订还是新订一个，所以这两项无法核实。</li>
+  <li><b>活动与票务两款产品的办成情况相同，Muse 的条件满足多 1 项。</b>两款产品都办成了 Tatiana，也都在爵士演出买票这道题停在付款前。Muse 选的场次有每人 $20 的最低消费，超出预算；Karpo 的记录没有保存场馆和票价，“在曼哈顿”和“每张 $40 以内”两项按未满足计算。</li>
+  <li><b>即时推荐和信息查询两款产品都是满分，回答也都很快。</b>Muse 这一类平均 ${mmss(CS["即时推荐与查询"].mu.secs)}，Karpo 平均 ${mmss(CS["即时推荐与查询"].ka.secs)}。Muse 推荐了 Ace Bar，Karpo 推荐了 The Wayland，营业时间和 walk-in 规则都与公开信息一致。</li>
+</ul>
+
+<h3 class="rh">Meta Muse</h3>
+<p><b>Meta Muse：</b>总分 ${mu.score.toFixed(1)}，第一期第 1；办成 ${mu.done} 道、部分办成 ${mu.partial} 道，办成率 ${pct(mu.rate)}%，条件满足 ${pct(mu.cond)}%，平均耗时 ${mmss(mu.secs)}。</p>
+<ul>
+  <li><b>预订类回复信息完整，三次预订都写明了地址、时间、人数、预订姓名和确认号。</b>两人周六晚餐满足全部 8 项条件；改单时原时段坐不下 3 人，Muse 先问能否推迟 15 分钟，再把预订改为 7:45pm，确认号保持不变。</li>
+  <li><b>倾向于直接执行，追问次数少。</b>需要订餐厅的 3 道新预订题中，Muse 只在 6 人生日聚餐里问过一次，一次问全了人数、时间、预算和区域；拿到答案后没有再确认，直接完成了预订。</li>
+  <li><b>耗时集中在一道题上。</b>带狗 brunch 用了 ${mmss(R["Meta Muse"].T6.seconds)}，是其余 7 道题平均耗时（${mmss(noT6("Meta Muse"))}）的 ${(R["Meta Muse"].T6.seconds / noT6("Meta Muse")).toFixed(1)} 倍；Katz's 营业信息只用了 ${mmss(R["Meta Muse"].T8.seconds)}。</li>
+  <li><b>价格信息有遗漏。</b>爵士演出选择了 SMOKE 11 月 13 日晚场，2 张票 $56.87、单张 $28.44，没有提到每人 $20 的最低消费，合计每人至少 $48.44，超出用户 $40 的预算。</li>
+</ul>
+
+<h3 class="rh">Karpo</h3>
+<p><b>Karpo：</b>总分 ${ka.score.toFixed(1)}，第一期第 2；办成 ${ka.done} 道、部分办成 ${ka.partial} 道，办成率 ${pct(ka.rate)}%，条件满足 ${pct(ka.cond)}%，平均耗时 ${mmss(ka.secs)}。</p>
+<ul>
+  <li><b>先给推荐和介绍，再请用户选择。</b>6 人生日聚餐这道题，Karpo 先推荐了几家餐厅并介绍每家的背景，然后问人数和区域，再问具体时间，共追问 2 次。用户还没有选定餐厅，Karpo 就预订了它的首选 Barbounia，时间是 7:15pm，比用户说的 7:30pm 早 15 分钟，回复中写明了。</li>
+  <li><b>推荐出错时会自己纠正。</b>两人周六晚餐这道题，Karpo 最先推荐的 Soda Club 当时没有营业，它发现后主动提出换成纯素餐厅 Avant Garden，用户同意后完成预订。</li>
+  <li><b>会提示费用，并把付款和验证交给用户。</b>带狗 brunch 这道题，Karpo 提示当天 11:30am 以后取消每人收 $10 加税；爵士演出买票这道题，Karpo 在付款前直接向用户要银行卡信息。</li>
+  <li><b>预订回复不够完整。</b>没有写预订姓名；改单时给出的可选时段是 5:00pm 到 7:00pm，最后订的是 7:30pm，也没有说明原预订是否被替换。</li>
+</ul>
+
+<h3 class="rh">预订通道与支付</h3>
+<ul>
+  <li><b>两款产品都通过第三方订位平台下单，订位平台的登录和验证决定了最后一步由谁来做。</b>两款产品在带狗 brunch 这道题都选择了 Hudson Clearwater，这家餐厅在 Resy 上订位。Muse 完成了预订，耗时较长；Karpo 遇到 Resy 的手机号验证后停下，请用户自己完成。</li>
+  <li><b>付款方式不同。</b>Muse 通过已连接的 Stripe Link 付款，测试账号没有连接 Stripe Link，所以停在付款前；Karpo 在对话中直接向用户要银行卡号和邮箱。</li>
+  <li><b>Tatiana 的处理方式不同。</b>两款产品都正确说明了该餐厅提前 28 天中午 12 点放位。Muse 表示会在放位时自己尝试预订；Karpo 设置了监控，有位子时通知用户。</li>
+</ul>
+
+<h3 class="rh">结语</h3>
+<p>第一期的 8 道题里，两款产品在即时推荐和信息查询上表现相同，差距主要出现在需要真实预订的题目上。Muse 的做法是尽量自己做完，回复写全预订信息，代价是在个别平台上耗时很长；Karpo 的做法是先给推荐、让用户选择，并把登录、验证和付款交给用户，平均更快，但预订回复里缺少关键信息。两款产品都不会主动询问用户没有说出的条件，例如饮食限制和蛋糕。第二期测试集扩展到 10 道题，加入行程中改需求、记住偏好、饮食记录、每日提醒和工作日程类题目，会继续比较两款产品在这些方面的差异。</p>
+<p class="foot">Errand Bench 采用持续更新的测评方式，题目和榜单会随新产品、新场景陆续更新。第一期使用旧的计分方法，与第二期的分数不能直接比较。</p>`;
 
 /* ---- conversation: Muse C3 ---- */
 const c3 = R["Meta Muse"]["C3-L3"];
