@@ -269,7 +269,7 @@ tr.pending td{color:var(--muted)}
 
 <header class="nav page"><div class="col">
   <a class="brand" href="#top"><i></i>Errand Bench</a>
-  <nav aria-label="目录"><a href="#board">榜单</a><a href="#report">第一期报告</a><a href="#compare">逐题对比</a><a href="#method">测评方法</a><a href="#tasks">任务</a><a href="#log">更新记录</a></nav>
+  <nav aria-label="目录"><a href="#board">榜单</a><a href="#report">第一期报告</a><a href="#compare">逐题对比</a><a href="#method">测评方法</a><a href="#log">更新记录</a></nav>
   <span class="ver" id="navVer"></span>
 </div></header>
 
@@ -289,11 +289,11 @@ tr.pending td{color:var(--muted)}
     </div>
     <div class="lb-top"><div class="tabs" id="trackTabs"></div><span class="badge" id="badge"></span></div>
     <div id="p1">
-    <div class="tablewrap"><table class="lb" style="min-width:1000px"><thead><tr>
-      <th>排名</th><th>产品</th><th>总分</th><th>吃喝玩乐</th><th>生活健康</th><th>工作</th><th>平均耗时</th><th>平均追问次数</th><th>事实错误</th><th>闯祸</th><th>不支持</th><th>运行入口</th>
+    <div class="tablewrap"><table class="lb" style="min-width:1180px"><thead><tr>
+      <th>排名</th><th>产品</th><th>总分</th><th>吃喝玩乐场景得分<br><span class="tiny">5 题 · 权重 50%</span></th><th>生活健康场景得分<br><span class="tiny">2 题 · 权重 25%</span></th><th>工作场景得分<br><span class="tiny">3 题 · 权重 25%</span></th><th>平均耗时（每题）</th><th>平均追问（每题）</th><th>事实错误（次）</th><th>闯祸（次）</th><th>不支持（题）</th><th>运行入口</th>
     </tr></thead><tbody id="lbV1"></tbody></table></div>
     <div class="compare" style="margin-top:18px"><table class="deftable"><thead><tr><th>列</th><th>计算方法</th></tr></thead><tbody>
-      <tr><td>场景分</td><td>每个场景单独计算：（办成率 + 条件满足率）÷ 2，满分 100。办成、部分办成、没办成分别计 1、0.5、0 分；产品没有这项功能的题记为“不支持”，按 0 分计算。</td></tr>
+      <tr><td>场景得分</td><td>吃喝玩乐、生活健康、工作三个场景分别计算：（办成率 + 条件满足率）÷ 2，满分 100。办成、部分办成、没办成分别计 1、0.5、0 分；产品没有这项功能的题记为“不支持”，按 0 分计算。</td></tr>
       <tr><td>总分</td><td>吃喝玩乐 × 50% + 生活健康 × 25% + 工作 × 25%。每出现 1 次事实错误或闯祸，扣 5 分。</td></tr>
       <tr><td>平均耗时</td><td>从发出最后一条原话到产品给出最终结果的时间，取 10 道题的平均值。需要隔天完成的题不计入。</td></tr>
       <tr><td>平均追问次数</td><td>产品向用户提问的总次数除以题数。</td></tr>
@@ -304,7 +304,7 @@ tr.pending td{color:var(--muted)}
     <div id="p0" hidden>
     <p class="small muted" style="margin-bottom:12px">第一期使用旧的计分方法：总分 =（办成率 + 条件满足率）÷ 2；“不支持”不计入分母。与第二期的分数不能直接比较。</p>
     <div class="tablewrap"><table class="lb"><thead><tr>
-      <th>排名</th><th>产品</th><th>总分</th><th>办成率</th><th>条件满足率</th><th>平均耗时</th><th>平均追问次数</th><th>有追问的任务</th><th>事实错误</th><th>闯祸</th><th>测评时间</th>
+      <th>排名</th><th>产品</th><th>总分</th><th>办成率</th><th>条件满足率</th><th>平均耗时（每题）</th><th>平均追问（每题）</th><th>有追问的题</th><th>事实错误（次）</th><th>闯祸（次）</th><th>测评时间</th>
     </tr></thead><tbody id="lbBody"></tbody></table></div>
     <div class="compare" style="margin-top:18px"><table class="deftable"><thead><tr><th>列</th><th>计算方法</th></tr></thead><tbody>
       <tr><td>总分</td><td>办成率和条件满足率的平均值，满分 100。每出现 1 次事实错误或闯祸，扣 5 分。</td></tr>
@@ -354,16 +354,6 @@ tr.pending td{color:var(--muted)}
       <li><b>工作题不连接邮箱。</b>邮件和日程内容以文字形式附在原话后面，所有产品收到的内容相同。</li>
       <li><b>运行入口。</b>目前每个产品使用它的主要入口测试，例如 Meta Muse 使用网页版，Karpo 使用手机 App。榜单上会写明每个产品的入口。下一步会尝试在虚拟机中统一运行环境。</li>
     </ol>
-  </div></section>
-
-  <section class="band alt" id="tasks" style="margin-inline:-20px;padding-inline:20px"><div class="col">
-    <div class="sechead">
-      <span class="eyebrow">任务</span>
-      <h2>测试集 v1：10 道题</h2>
-      <p>原话为产品会收到的文字，日期按 2026 年 11 月 9 日测试填写。展开可查看完整需求、答案卡和检查条件。</p>
-    </div>
-    <div id="v1List" style="display:flex;flex-direction:column;gap:28px"></div>
-    <details style="margin-top:36px"><summary>第一期的 8 道题（只包含吃喝玩乐）</summary><div class="tasks" id="taskList" style="margin-top:16px"></div></details>
   </div></section>
 
   <section class="band" id="log"><div class="col two">
@@ -524,33 +514,6 @@ $("convoPhone").innerHTML = `<div class="phone-head"><span class="eyebrow">Meta 
 $("convoVerdict").innerHTML = `<h3>判分：${VERD[c3.grade.status]}</h3>` + c3.grade.checks.map(([c, ok]) => `<div class="checkrow ${ok ? "y" : "n"}"><i>${ok ? "✓" : "✗"}</i><span>${esc(c)}</span></div>`).join("") +
   `<div class="vrow"><span class="muted">提问</span><b class="num">1 次</b></div><div class="vrow"><span class="muted">事实错误</span><b class="num">0</b></div>
    <p class="small muted">没有满足的 3 项：能否自带蛋糕无法核实，没有告知可能的 cake fee，预订前没有向用户确认。</p>`;
-
-/* ---- tasks ---- */
-$("taskList").innerHTML = ORDER.map(id => { const t = T[id];
-  return `<article class="task"><div class="task-head"><div style="display:flex;flex-direction:column;gap:6px"><span class="id">${esc(id.replace("-L3", ""))}</span><h3>${esc(NAME[id])}</h3></div></div>
-    <div class="say"><span class="who">原话</span><span class="bub">${esc(fill(t.prompt))}</span></div>
-    <details><summary>完整需求和检查条件</summary><dl>
-      <dt>完整需求</dt><dd>${esc(fill(t.truth || ""))}</dd>
-      ${t.pre ? `<dt>前提</dt><dd>${esc(t.pre)}</dd>` : ""}
-      <dt>答案卡</dt><dd><ul>${(t.card || []).map(([q, a]) => `<li><span class="muted">${esc(q)}：</span><span class="num" style="font-size:13px">${esc(fill(a))}</span></li>`).join("")}</ul></dd>
-      <dt>办成标准</dt><dd>${esc(fill(t.done))}</dd>
-      <dt>检查条件</dt><dd><ul>${t.checks.map(c => `<li>${esc(fill(c))}</li>`).join("")}</ul></dd>
-    </dl></details></article>`; }).join("");
-
-/* ---- v1 tasks ---- */
-Object.assign(D, { TUE2_LONG: "Tuesday, November 17", WED2_LONG: "Wednesday, November 18", THU2_LONG: "Thursday, November 19", FRI2_LONG: "Friday, November 20", FRI2_SHORT: "friday the 20th", E1_RESTAURANT: "[E1 订到的餐厅名]" });
-$("v1List").innerHTML = DATA.scenarios.map(sc => `<div><h3 style="margin-bottom:14px">${esc(sc.name)} · ${sc.count} 题 · 占总分 ${Math.round(sc.weight * 100)}%</h3><div class="tasks">` +
-  DATA.tasks.filter(t => t.scenario === sc.id && !t.archived).map(t => {
-    const msgs = t.steps ? t.steps.filter(x => x.text).map(x => `<div class="say"><span class="who">${esc(x.label)}</span><span class="bub">${esc(fill(x.text))}</span></div>`).join("")
-      : `<div class="say"><span class="who">原话</span><span class="bub" style="white-space:pre-wrap">${esc(fill(t.prompt) + (t.attach ? "\n\n" + fill(t.attach) : ""))}</span></div>`;
-    return `<article class="task"><div class="task-head"><div style="display:flex;flex-direction:column;gap:6px"><span class="id">${esc(t.id)}</span><h3>${esc(t.title)}</h3></div></div>
-      <p class="small muted">考察：${esc(t.tests)}${t.next_day ? "。需要隔天完成" : ""}</p>${t.pre ? `<p class="small muted">${esc(t.pre)}</p>` : ""}${msgs}
-      <details><summary>完整需求和检查条件</summary><dl>
-        <dt>完整需求</dt><dd>${esc(fill(t.truth))}</dd>
-        <dt>答案卡</dt><dd><ul>${t.card.map(([q, a]) => `<li><span class="muted">${esc(q)}：</span><span class="num" style="font-size:13px">${esc(fill(a))}</span></li>`).join("")}</ul></dd>
-        <dt>办成标准</dt><dd>${esc(fill(t.done))}</dd>
-        <dt>检查条件</dt><dd><ul>${t.checks.map(c => `<li>${esc(fill(c))}</li>`).join("")}</ul></dd>
-      </dl></details></article>`; }).join("") + `</div></div>`).join("");
 
 $("logList").innerHTML = [
   ["now", "v1.0 · 2026.11.06", "测试集扩展为 10 道题，覆盖吃喝玩乐、生活状态和健康、工作交叉三个场景，总分按 50%、25%、25% 加权。第二期测试进行中。"],
