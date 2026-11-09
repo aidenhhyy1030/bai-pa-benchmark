@@ -444,13 +444,14 @@ function m2(p) {
     na: g.filter(r => r.grade.status === "na").length, done: g.filter(r => r.grade.status === "done").length, partial: g.filter(r => r.grade.status === "partial").length, fail: g.filter(r => r.grade.status === "fail").length,
     entry: g[0].entry, date: g[0].run_date };
 }
-const V1M = V1.map(v => ({ v, m: m2(v[0]) })).sort((a, b) => ((b.m && b.m.n === 10) - (a.m && a.m.n === 10)) || (b.m ? b.m.total : -1) - (a.m ? a.m.total : -1));
+const PAUSED = new Set(["Rabbit OS3 · DeepSeek V4 Flash", "Rabbit OS3 · GLM 5.1"]);
+const V1M = V1.map(v => ({ v, m: PAUSED.has(v[0]) ? null : m2(v[0]) })).sort((a, b) => ((b.m && b.m.n === 10) - (a.m && a.m.n === 10)) || (b.m ? b.m.total : -1) - (a.m ? a.m.total : -1));
 let rk = 0;
 $("badge").textContent = `第二期完成 ${V1M.filter(x => x.m && x.m.n === 10).length} 个产品`;
 $("lbV1").innerHTML = V1M.map(({ v: [p, o, c, e], m }) => m ? `<tr${m.n < 10 ? ' class="pending"' : ""}><td class="rank">${m.n < 10 ? "—" : ++rk}</td><td><div class="prod"><span class="mono-badge" style="background:${c}">${esc(p.slice(0, 2).toUpperCase())}</span><div><b>${esc(p)}</b><span>${esc(o)}${m.n < 10 ? ` · 部分结果，已测 ${m.n}/10 题` : ""}</span></div></div></td>
     <td>${m.n < 10 ? `<span class="small">待补测</span>` : bar(m.total, "var(--accent)", m.total.toFixed(1))}</td>${DATA.scenarios.map(x => `<td class="num">${m.scn[x.id] == null ? "—" : m.scn[x.id].toFixed(1)}</td>`).join("")}
     <td class="num">${mmss(m.secs)}</td><td class="num">${m.asks.toFixed(2)} 次</td><td class="num">${m.facts}</td><td class="num">${m.inc}</td><td class="num">${m.na}</td><td>${esc(m.entry || e)}</td></tr>`
-  : `<tr class="pending"><td class="rank">—</td><td><div class="prod"><span class="mono-badge" style="background:${c || "var(--muted)"}">${esc(p.slice(0, 2).toUpperCase())}</span><div><b>${esc(p)}</b><span>${esc(o)}</span></div></div></td><td colspan="9">待测</td><td>${esc(e)}</td></tr>`).join("");
+  : `<tr class="pending"><td class="rank">—</td><td><div class="prod"><span class="mono-badge" style="background:${c || "var(--muted)"}">${esc(p.slice(0, 2).toUpperCase())}</span><div><b>${esc(p)}</b><span>${esc(o)}</span></div></div></td><td colspan="9">${PAUSED.has(p) ? `本期暂停测试：产品在测试期间无法正常使用，见下方报告` : "待测"}</td><td>${esc(PAUSED.has(p) ? "Mac 电脑 App" : e)}</td></tr>`).join("");
 
 $("lbBody").innerHTML = [...PRODUCTS].sort((a, b) => M[b.id].score - M[a.id].score).map((p, i) => { const m = M[p.id];
   return `<tr><td class="rank">${i + 1}</td><td><div class="prod"><span class="mono-badge" style="background:${p.color}">${p.tag}</span><div><b>${esc(p.id)}</b><span>${esc(p.org)}</span></div></div></td>
@@ -557,7 +558,7 @@ $("convoVerdict").innerHTML = `<h3>判分：${VERD[c3.grade.status]}</h3>` + c3.
   const sc = id => (m.scn[id] ?? 0).toFixed(1);
   $("r2Title").innerHTML = `<b>Meta Muse 工作和健康得分高，订餐卡在订位平台</b>｜Errand Bench 第二期报告（Meta Muse）`;
   $("r2Body").innerHTML = `
-<p>2026 年 11 月 8 日，Errand Bench 用测试集 v1 的 10 道题测试了 Meta Muse 网页版，覆盖吃喝玩乐、生活状态和健康、工作交叉三个场景。Karpo 和 Rabbit OS3（分别使用 DeepSeek V4 Flash 和 GLM 5.1 的 API key）的测试正在进行，完成后会更新榜单和对比。</p>
+<p>2026 年 11 月 8 日，Errand Bench 用测试集 v1 的 10 道题测试了 Meta Muse 网页版，覆盖吃喝玩乐、生活状态和健康、工作交叉三个场景。Karpo 的测试正在进行，完成后会更新榜单和对比。Rabbit OS3 在测试期间多次无法正常使用，本期暂停测试，具体问题见本节最后。</p>
 <p>Meta Muse 总分 ${m.total.toFixed(1)}。吃喝玩乐场景得分 ${sc("fun")}，生活健康场景得分 ${sc("health")}，工作场景得分 ${sc("work")}。10 道题中办成 ${m.done} 道、部分办成 ${m.partial} 道、没办成 ${m.fail} 道；出现 ${m.facts} 处事实错误，扣 5 分，没有闯祸。每日提醒以外的 9 道题平均耗时 ${mmss(m.secs)}，平均每道题追问 ${m.asks.toFixed(2)} 次。</p>
 <p>结合对话记录，Muse 这一期呈现出 3 个清晰的特点：</p>
 <ul>
@@ -594,14 +595,17 @@ ${["E1", "E2", "E3", "E4", "E5", "H1", "H2", "W1", "W2", "W3"].filter(id => Q[id
 
 <h3 class="rh">结语</h3>
 <p>按 v1 的 10 道题，Meta Muse 的强项在工作和健康类任务：时间推理、营养估算和日程整理都准确，并且会跨对话记住用户的信息。弱项集中在吃喝玩乐的执行环节：订位平台的拦截和信用卡担保让它在多道订餐题上停在最后一步，行程推荐没有问用户偏好，也出现了 1 处营业时间错误。跨对话记忆在多数题目上帮了忙，但在起草回复这道题上，Muse 把一个没有完成的预订当成了已有安排。</p>
-<h3 class="rh">Rabbit OS3 · GLM 5.1（部分结果）</h3>
-<p>Rabbit OS3 需要在电脑上安装本地程序来执行订位、设提醒、写日历等操作。本次测试时，本地程序刚安装完成，屏幕录制和控制 Chrome 两项系统权限还没有授权，订餐厅、改预订、记住偏好、每日提醒 4 道题卡在执行步骤，需要重测。下面是其余 6 道题的结果，总分在 10 道题全部测完后计算。</p>
+<h3 class="rh">Rabbit OS3：本期暂停测试</h3>
+<p>Rabbit OS3 原计划分别使用 GLM 5.1 和 DeepSeek V4 Flash 两个模型的 API key 各测一遍。11 月 8 日到 9 日测试期间，产品多次无法正常使用，本期暂停测试，不进入榜单。下面的问题来自 Rabbit OS3 在测试电脑上的本地日志和测试记录。</p>
 <ul>
-  <li><b>工作类 3 道题完成得最好，办成 2 道、部分办成 1 道，条件满足 14/15。</b>从邮件整理日程，两件确定的事全部正确，并指出周四 7 点后和 Jordan 喝酒不会和 offsite 冲突；发现时间冲突，算出大约 7:30 才能到，建议改到 7:45 或 8:00。</li>
-  <li><b>行程类 2 道题没有按用户偏好安排，条件满足 6/13。</b>Rabbit 推荐了 Brooklyn Museum、Prospect Park 和 Park Slope 的喜剧演出，用户说过不想逛博物馆，地点也不在 Williamsburg 或 Greenpoint；下雨改室内时，Rabbit 选择留在博物馆，下一站不在步行范围内。</li>
-  <li><b>饮食记录漏算了拿铁。</b>Rabbit 估算全天 80 到 90g，比参考值约 100g 少了一杯拿铁的蛋白质（约 12g）；还差多少、怎么补充都说清楚了。</li>
-  <li><b>和 Meta Muse 一样，Rabbit 也把没有完成的预订当成了已有安排。</b>起草回复这道题，Rabbit 认为用户周五晚上已经订了 Boucherie，婉拒了团队晚餐；Boucherie 实际因为权限问题没有订成。发现时间冲突这道题，Rabbit 也说周四 7 点已经和 Jordan 约好喝酒，这件事同样没有写进日历。</li>
+  <li><b>本地程序安装不稳定，多次安装失败。</b>Rabbit OS3 需要在电脑上安装一个本地程序（rabbit-agent），由它来执行订位、设提醒、写日历等操作。App 日志显示，10 月 29 日到 11 月 9 日之间安装至少失败了 6 次，原因包括安装脚本语法错误、程序启动失败，以及无法向 Rabbit 服务器注册。</li>
+  <li><b>报错信息没有说明缺的是哪项系统权限。</b>本地程序需要“屏幕录制”和“控制 Chrome”两项 macOS 权限。第一次测试时这两项都没有开启，订位、设提醒、写日历都失败了，但产品只提示“权限检查没有通过”，没有说明缺的是哪一项、要去哪里开启。这个程序装在用户目录的隐藏文件夹里，在系统设置的权限列表里默认看不到，需要手动添加。</li>
+  <li><b>服务端停机维护，测试中断。</b>11 月 9 日纽约时间上午约 11 点起，本地程序连不上 Rabbit 的服务器，每 30 秒重连一次都失败，App 显示“正在维护”页面。</li>
+  <li><b>账号重置、系统权限全部开启后，产品自己的权限服务仍然报错。</b>维护结束后，测试员重置了 Rabbit 账号，本地程序重新注册、连接成功，系统权限也全部开启。此时 App 的权限页面显示“无法保存或检查权限”“有一项权限无法删除，相关操作已暂停”，订位等操作仍然无法执行。本地程序的日志里没有对应的错误，问题出在 Rabbit 的服务端。</li>
+  <li><b>App 主进程经常长时间没有响应。</b>11 月 9 日的 App 日志中，主进程卡住的记录有 74 条，每次通常持续约 15 分钟，最长约 18 分钟。</li>
+  <li><b>本地程序每 2 分钟读取一次不存在的配置文件。</b>本地程序会定期读取一个外部工具的配置文件，这个文件在测试电脑上一直不存在，每次读取都报错。这和日历、提醒功能不可用是否有关，目前无法确定。</li>
 </ul>
+<p>在权限问题出现之前，Rabbit OS3（GLM 5.1）完成了 6 道不需要在电脑上执行操作的题。工作类题目完成得较好：从邮件整理日程、发现时间冲突两道题都办成了。行程类题目没有按用户偏好安排：推荐了用户明确说过不想去的博物馆。和 Meta Muse 一样，Rabbit 也把一个因为权限问题没有订成的餐厅当成了已有安排，在起草回复时婉拒了团队晚餐。这 6 道题的结果只作参考，不计分。</p>
 <p class="foot">第二期其他产品的测试正在进行，全部完成后会加入产品之间的对比。</p>`;
 })();
 
