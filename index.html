@@ -356,14 +356,14 @@ table.res td:first-child{min-width:120px}
 .stats span{font-size:13.5px;color:var(--muted);line-height:1.6}
 
 /* multi-page views + gradients */
-body{background:radial-gradient(1100px 520px at 88% -8%,#DCE3EE 0%,rgba(220,227,238,0) 62%),radial-gradient(900px 600px at -12% 38%,#EEF2F8 0%,rgba(238,242,248,0) 60%),linear-gradient(180deg,#ffffff 0%,#F7F9FC 100%);background-attachment:fixed;min-height:100vh}
+body{background:radial-gradient(900px 560px at 100% 0%,rgba(65,95,140,.38) 0%,rgba(65,95,140,0) 65%),radial-gradient(700px 520px at 0% 42%,rgba(91,125,177,.22) 0%,rgba(91,125,177,0) 65%),radial-gradient(600px 420px at 100% 85%,rgba(192,0,0,.07) 0%,rgba(192,0,0,0) 65%),linear-gradient(180deg,#D5DFEC 0%,#EEF2F8 38%,#F8FAFD 75%,#FFFFFF 100%);background-attachment:fixed;min-height:100vh}
 .nav{background:rgba(255,255,255,.82)}
 .nav nav a[aria-current]{color:var(--accent);font-weight:700;box-shadow:inset 0 -2px 0 var(--accent)}
 .nav nav a{padding-block:17px}
-.cover{background:radial-gradient(700px 360px at 92% 10%,rgba(91,125,177,.55) 0%,rgba(91,125,177,0) 70%),linear-gradient(120deg,#002D64 0%,#0E2E60 45%,#24497F 100%)}
-.cover::after{background:#03275A}
-.pbanner{margin-top:28px;margin-bottom:40px;position:relative;color:#fff;padding:34px clamp(20px,5vw,48px) 38px;display:flex;flex-direction:column;gap:10px;background:radial-gradient(600px 280px at 95% 0%,rgba(91,125,177,.55) 0%,rgba(91,125,177,0) 70%),linear-gradient(120deg,#002D64 0%,#0E2E60 50%,#24497F 100%)}
-.pbanner::after{content:"";position:absolute;left:0;bottom:-28px;width:9%;min-width:40px;height:28px;background:#03275A;clip-path:polygon(0 0,100% 0,0 100%)}
+.cover{background:radial-gradient(620px 340px at 95% 0%,rgba(140,175,225,.55) 0%,rgba(140,175,225,0) 70%),radial-gradient(420px 260px at 0% 100%,rgba(192,0,0,.22) 0%,rgba(192,0,0,0) 70%),linear-gradient(115deg,#001A3F 0%,#002D64 32%,#1D4682 68%,#4B76B0 100%);box-shadow:0 30px 60px -36px rgba(0,30,70,.55)}
+.cover::after{background:#001E47}
+.pbanner{margin-top:28px;margin-bottom:40px;position:relative;color:#fff;padding:34px clamp(20px,5vw,48px) 38px;display:flex;flex-direction:column;gap:10px;background:radial-gradient(520px 260px at 95% 0%,rgba(140,175,225,.55) 0%,rgba(140,175,225,0) 70%),radial-gradient(360px 200px at 0% 100%,rgba(192,0,0,.2) 0%,rgba(192,0,0,0) 70%),linear-gradient(115deg,#001A3F 0%,#002D64 32%,#1D4682 68%,#4B76B0 100%);box-shadow:0 26px 50px -32px rgba(0,30,70,.55)}
+.pbanner::after{content:"";position:absolute;left:0;bottom:-28px;width:9%;min-width:40px;height:28px;background:#001E47;clip-path:polygon(0 0,100% 0,0 100%)}
 .pbanner h1{color:#fff;font-weight:400;font-size:clamp(30px,4.6vw,44px)}
 .pbanner p{color:#DCE3EE}
 .pbanner .eyebrow{color:#AFBED2}
@@ -373,7 +373,7 @@ body{background:radial-gradient(1100px 520px at 88% -8%,#DCE3EE 0%,rgba(220,227,
 .pagefoot a{text-decoration:none;font:700 15px Arial,var(--body);color:var(--accent)}
 .pagefoot a:hover{color:var(--hl)}
 .cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
-.pcard{position:relative;display:flex;flex-direction:column;gap:10px;padding:26px 26px 22px;text-decoration:none;color:var(--ink);background:linear-gradient(160deg,#ffffff 0%,#F2F5FA 100%);border:1px solid var(--line);border-top:0;transition:transform .15s,box-shadow .15s}
+.pcard{position:relative;display:flex;flex-direction:column;gap:10px;padding:26px 26px 22px;text-decoration:none;color:var(--ink);background:linear-gradient(150deg,#ffffff 0%,#E6EDF6 100%);border:1px solid var(--line);border-top:0;transition:transform .15s,box-shadow .15s}
 .pcard::before{content:"";position:absolute;inset:0 0 auto 0;height:4px;background:linear-gradient(90deg,#002D64,#415F8C 70%,#C00000)}
 .pcard:hover{transform:translateY(-2px);box-shadow:0 18px 40px -24px rgba(0,45,100,.45)}
 .pcard .k{font:700 12px Arial,sans-serif;letter-spacing:.08em;color:var(--navy2)}
@@ -382,6 +382,8 @@ body{background:radial-gradient(1100px 520px at 88% -8%,#DCE3EE 0%,rgba(220,227,
 .pcard .go{margin-top:auto;font:700 14px Arial,var(--body);color:var(--hl)}
 table.lb td a,.report a{color:var(--accent)}
 section.band{background:transparent!important}
+#board,#pages{background:linear-gradient(180deg,rgba(255,255,255,.75) 0%,rgba(220,227,238,.55) 100%)!important;border-top:1px solid rgba(0,45,100,.12)}
+#pages{background:linear-gradient(180deg,rgba(220,227,238,.6) 0%,rgba(255,255,255,.4) 100%)!important}
 .tablewrap,.compare{background:#fff}
 @media (max-width:900px){.cards{grid-template-columns:1fr}}
 .report>*{min-width:0;max-width:100%}
@@ -449,7 +451,7 @@ section.band{background:transparent!important}
     </div>
   </div></section>
 
-  <section class="band" id="pages"><div class="col">
+  <section class="band" id="pages" style="margin-inline:-20px;padding-inline:20px"><div class="col">
     <div class="sechead"><span class="eyebrow">Reports</span><h2>报告与方法</h2><p>每期测试结束后发布一份报告，写清楚每个产品做成了什么、卡在哪里。</p></div>
     <div class="cards">
       <a class="pcard" href="#/report2"><span class="k">第二期 · 2026.11.09</span><h3>Karpo 订餐全部订成，Muse 健康题更稳</h3><p>10 道题，覆盖吃喝玩乐、生活健康、工作三个场景。Karpo 65.5，Meta Muse 60.1；Rabbit OS3 本期暂停。</p><span class="go">阅读报告 →</span></a>
