@@ -1,7 +1,7 @@
 <!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body><title>Errand Bench</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;900&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&display=swap">
 <style>
 /* Layout: a public benchmark report. Narrow reading column for prose, full-width bands for the leaderboard and task browser.
    Signature element: prompts are drawn as chat bubbles, so "the same errand said three ways" is visible at a glance. */
@@ -266,19 +266,133 @@ tr.pending td{color:var(--muted)}
 .plain{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:8px;font-size:15px;max-width:780px}
 .deftable td:first-child{white-space:nowrap;font-weight:500}
 </style>
+<style>
+/* BAI Capital theme: colours and type taken from the Personal Agent Research deck (navy #002D64, red #C00000, light blue #DCE3EE, grey #F0F0F0, Arial titles, Kaiti body)
+   and emphasis rules from the BAI WeChat account (bold navy for key names, bold red for the firm and key conclusions, justified text, 0.5px tracking). */
+:root{
+  --bg:#ffffff; --surface:#ffffff; --sunk:#F0F0F0; --ink:#1a1a1a; --muted:#646464; --line:#D3D3D3; --rule:#BFBFBF;
+  --accent:#002D64; --accent-ink:#ffffff; --accent-soft:#DCE3EE; --navy2:#415F8C; --hl:#C00000; --hl-soft:#F6DADA; --brandred:#E50127;
+  --bubble:#F0F0F0; --bubble-me:#002D64; --bubble-me-ink:#ffffff;
+  --ok:#002D64; --ok-soft:#DCE3EE; --bad:#C00000; --bad-soft:#F6DADA; --warn:#8A5A00; --warn-soft:#F7EBD6;
+  --display:Arial,"Helvetica Neue","STKaiti","Kaiti SC","KaiTi","BiauKai",serif;
+  --body:"STKaiti","Kaiti SC","KaiTi","BiauKai","Noto Serif SC",serif;
+  --mono:Arial,"Helvetica Neue","STKaiti","Kaiti SC","KaiTi",sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0B1626; --surface:#0F1E35; --sunk:#16263F; --ink:#E6ECF5; --muted:#A3B0C4; --line:#2A3C58; --rule:#3A4D6B;
+  --accent:#9DB9E6; --accent-ink:#0B1626; --accent-soft:#1B3255; --navy2:#7F9CCB; --hl:#FF7A7A; --hl-soft:#3A1C22; --brandred:#FF4D5E;
+  --bubble:#1B2B45; --bubble-me:#2D5596; --bubble-me-ink:#ffffff;
+  --ok:#9DB9E6; --ok-soft:#1B3255; --bad:#FF7A7A; --bad-soft:#3A1C22; --warn:#E8B565; --warn-soft:#3A2D14; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0B1626; --surface:#0F1E35; --sunk:#16263F; --ink:#E6ECF5; --muted:#A3B0C4; --line:#2A3C58; --rule:#3A4D6B;
+  --accent:#9DB9E6; --accent-ink:#0B1626; --accent-soft:#1B3255; --navy2:#7F9CCB; --hl:#FF7A7A; --hl-soft:#3A1C22; --brandred:#FF4D5E;
+  --bubble:#1B2B45; --bubble-me:#2D5596; --bubble-me-ink:#ffffff;
+  --ok:#9DB9E6; --ok-soft:#1B3255; --bad:#FF7A7A; --bad-soft:#3A1C22; --warn:#E8B565; --warn-soft:#3A2D14; color-scheme:dark}
+body{font:16px/1.85 var(--body);letter-spacing:.5px}
+h1,h2,h3{font-family:var(--display);font-weight:700;color:var(--accent);letter-spacing:0}
+h2{font-size:clamp(22px,3vw,30px)}
+.num,.rank,.meter b,.facts b{font-family:var(--mono);letter-spacing:0}
+.eyebrow{font:700 12px/1 Arial,sans-serif;letter-spacing:.1em;color:var(--navy2)}
+b,strong{color:var(--accent)}
+.hl{color:var(--hl);font-weight:700}
+
+/* brand mark: BAI in red, CAPITAL in dark, as on every slide */
+.bai-logo{font:700 15px/1 Arial,sans-serif;letter-spacing:.02em;white-space:nowrap;color:var(--ink)}
+.bai-logo em{font-style:normal;color:var(--brandred);font-weight:900}
+.bai-logo span{font-weight:400}
+.brand{font:700 15px Arial,sans-serif;color:var(--accent);gap:12px}
+.brand .sep{width:1px;height:18px;background:var(--rule);display:inline-block}
+.nav{background:color-mix(in srgb,var(--bg) 92%,transparent);border-bottom:1px solid var(--rule)}
+.nav nav a{font-family:Arial,var(--body);letter-spacing:0}
+.nav nav a:hover{color:var(--accent)}
+.nav .ver{font-family:Arial,sans-serif;border-radius:2px}
+
+/* cover: navy panel with the notched corner from the deck's title slide */
+.cover{margin-top:28px;background:#002D64;color:#fff;padding:52px clamp(20px,5vw,56px) 64px;position:relative;margin-bottom:36px}
+.cover::after{content:"";position:absolute;left:0;bottom:-36px;width:9%;min-width:44px;height:36px;background:#002D64;clip-path:polygon(0 0,100% 0,0 100%)}
+.head{padding-block:0 36px;gap:0}
+.cover .eyebrow{color:#AFBED2}
+.cover h1{color:#fff;font-weight:400;font-size:clamp(36px,6vw,58px);margin-top:14px}
+.cover .lede2{color:#E6ECF5;margin-top:18px;text-align:justify}
+.cover .facts{margin-top:30px;gap:0;border-top:1px solid rgba(255,255,255,.25);padding-top:22px}
+.cover .facts div{padding-right:32px;margin-right:32px;border-right:1px solid rgba(255,255,255,.25)}
+.cover .facts div:last-child{border-right:0}
+.cover .facts b{color:#fff;font-weight:400;font-size:26px}
+.cover .facts span{color:#AFBED2}
+.cover-foot{display:flex;justify-content:flex-end;padding-top:48px}
+.cover-foot .bai-logo{font-size:22px}
+.byline{font-size:14px;color:var(--muted)}
+.byline .bai-name{color:var(--brandred);font-weight:700}
+
+/* section titles: navy title over a hairline rule, like a slide header */
+section.band{border-top:0;padding-block:60px}
+section.band.alt{background:var(--bg)}
+.sechead{border-bottom:1px solid var(--rule);padding-bottom:14px;gap:8px;margin-bottom:28px}
+.sechead p{color:var(--muted)}
+
+/* square corners and navy headers everywhere, like the deck's tables */
+.tablewrap,.compare,.phone,.verdict,.insight,.track,.task,.chart,.ins,.metrics,.flow,.spectrum{border-radius:0}
+.tablewrap,.compare{border-color:var(--rule)}
+table.lb th,table.res th,.compare th,.who-table th{background:#002D64;color:#fff;font:700 13px var(--body);letter-spacing:.5px;border-bottom:0}
+table.lb th .tiny{color:#AFBED2}
+table.lb td,table.res td,.compare th,.compare td{border-bottom-color:var(--line)}
+table.lb tbody tr:nth-child(even) td,table.res tbody tr:nth-child(even) td{background:color-mix(in srgb,var(--accent-soft) 35%,var(--surface))}
+.rank{color:var(--accent)}
+.mono-badge{border-radius:2px;font-family:Arial,sans-serif}
+.prod b{font:700 15px/1.35 Arial,var(--body);letter-spacing:0;min-width:150px}
+.prod span{font-family:Arial,var(--body);letter-spacing:0}
+.meter .track-bar{border-radius:0;border:0;background:var(--sunk);height:10px}
+.meter .track-bar i{border-radius:0}
+.tabs button{border-radius:0;font-family:var(--body)}
+.tabs button[aria-pressed="true"]{background:#002D64;color:#fff;border-color:#002D64}
+.badge{border-radius:0;font-family:Arial,sans-serif}
+.v{border-radius:2px;font:700 12.5px var(--body);letter-spacing:.5px}
+.v.done{background:var(--ok-soft);color:var(--ok)} .v.partial{background:var(--warn-soft);color:var(--warn)} .v.fail{background:var(--bad-soft);color:var(--bad)}
+.bub{border-radius:4px;font-family:var(--body)}
+.bub.agent{border-radius:4px}
+.log div.now::before{background:#002D64;border-color:#002D64}
+.log b{font-family:Arial,sans-serif;color:var(--accent)}
+footer{border-top:1px solid var(--rule)}
+footer .bai-logo{font-size:16px}
+
+/* report body: WeChat-style justified text; bold = navy, conclusions = red */
+.report{max-width:900px}
+.report > p,.report ul{text-align:justify;letter-spacing:.5px}
+.report h3.rh{font-size:20px;border-top:0;padding-top:0;margin-top:26px;padding-bottom:10px;border-bottom:1px solid var(--rule)}
+.report ul li::marker{color:var(--accent)}
+.callout{background:var(--accent-soft);padding:16px 20px;font-size:16px;line-height:1.9;text-align:justify}
+.callout b{color:var(--accent)}
+table.res td:first-child{min-width:120px}
+.boxes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.boxes>div{display:flex;flex-direction:column;min-width:0;background:var(--sunk)}
+.boxes h4{margin:0;padding:9px 14px;color:#fff;font:700 15px var(--body);letter-spacing:.5px;text-align:center}
+.boxes>div:nth-child(1) h4{background:#002D64}.boxes>div:nth-child(2) h4{background:#415F8C}.boxes>div:nth-child(3) h4{background:#C00000}
+.boxes p{padding:14px 16px;font-size:15px;line-height:1.85;text-align:justify}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.stats>div{background:var(--sunk);padding:12px 16px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.stats b{font:400 24px Arial,sans-serif;color:var(--accent);letter-spacing:0}
+.stats b.r{color:var(--hl)}
+.stats span{font-size:13.5px;color:var(--muted);line-height:1.6}
+@media (max-width:900px){.boxes{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}.cover .facts div{padding-right:18px;margin-right:18px}}
+@media (max-width:520px){.cover .facts{display:grid;grid-template-columns:1fr 1fr;gap:14px}.cover .facts div{border-right:0;margin:0;padding:0}}
+</style>
+
 
 <header class="nav page"><div class="col">
-  <a class="brand" href="#top"><i></i>Errand Bench</a>
+  <a class="brand" href="#top"><span class="bai-logo"><em>BAI</em> <span>CAPITAL</span></span><i class="sep"></i>Errand Bench</a>
   <nav aria-label="目录"><a href="#board">榜单</a><a href="#report2">第二期报告</a><a href="#report">第一期报告</a><a href="#compare">逐题对比</a><a href="#method">测评方法</a><a href="#log">更新记录</a></nav>
   <span class="ver" id="navVer"></span>
 </div></header>
 
 <main class="page" id="top">
   <div class="col head">
-    <span class="eyebrow">Personal agent 产品测评 · 纽约</span>
-    <h1>Errand Bench</h1>
-    <p class="lede2">Errand Bench 测试 personal agent 产品能否完成普通用户的日常生活任务。每个产品收到相同的用户介绍和相同的任务原话，结果按任务的完整需求逐项检查。测试集 v1 共 10 道题，覆盖三个场景：吃喝玩乐（5 题，占总分 50%）、生活状态和健康（2 题，占 25%）、工作交叉（3 题，占 25%）。第一期只测了吃喝玩乐的 8 道题。</p>
-    <div class="facts" id="facts"></div>
+    <div class="cover">
+      <span class="eyebrow">Personal agent 产品测评 · 纽约</span>
+      <h1>Errand Bench</h1>
+      <p class="lede2">Errand Bench 是 BAI 资本发起的 personal agent 产品测评，测试这类产品能否完成普通用户的日常生活任务。每个产品收到相同的用户介绍和相同的任务原话，结果按任务的完整需求逐项检查。测试集 v1 共 10 道题，覆盖三个场景：吃喝玩乐（5 题，占总分 50%）、生活状态和健康（2 题，占 25%）、工作交叉（3 题，占 25%）。第一期只测了吃喝玩乐的 8 道题。</p>
+      <div class="facts" id="facts"></div>
+    </div>
+    <div class="cover-foot"><span class="bai-logo"><em>BAI</em> <span>CAPITAL</span></span></div>
   </div>
 
   <section class="band alt" id="board" style="margin-inline:-20px;padding-inline:20px"><div class="col">
@@ -387,8 +501,8 @@ tr.pending td{color:var(--muted)}
 </main>
 
 <footer class="page"><div class="col">
-  <span>Errand Bench · <span id="footVer"></span></span>
-  <span>Errand Bench 采用持续更新的测评方式，任务和榜单会随新产品、新场景陆续更新。</span>
+  <span><span class="bai-logo"><em>BAI</em> <span>CAPITAL</span></span> · Errand Bench · <span id="footVer"></span></span>
+  <span>Errand Bench 由 <b style="color:var(--brandred)">BAI 资本</b>发起，采用持续更新的测评方式，任务和榜单会随新产品、新场景陆续更新。</span>
 </div></footer>
 
 <script>
@@ -407,7 +521,7 @@ const T = Object.fromEntries(DATA.tasks.map(t => [t.id, t.need ? { ...t, truth: 
 const VERD = { done: "办成", partial: "部分办成", fail: "没办成", na: "不支持" };
 const mmss = s => s < 60 ? `${Math.round(s)} 秒` : `${Math.floor(s / 60)} 分 ${Math.round(s % 60)} 秒`;
 const pct = x => (x * 100).toFixed(1);
-const PRODUCTS = [{ id: "Meta Muse", org: "Meta", tag: "MU", color: "#3b5bdb" }, { id: "Karpo", org: "Karpo", tag: "KA", color: "#c2410c" }];
+const PRODUCTS = [{ id: "Meta Muse", org: "Meta", tag: "MU", color: "#002D64" }, { id: "Karpo", org: "Karpo", tag: "KA", color: "#008CA0" }];
 const PENDING = [["Rabbit OS3", "rabbit"], ["ChatGPT", "OpenAI"], ["Gemini", "Google"]];
 
 function metrics(p) {
@@ -431,7 +545,7 @@ $("trackTabs").addEventListener("click", e => { const b = e.target.closest("[dat
   for (const x of $("trackTabs").querySelectorAll("button")) x.setAttribute("aria-pressed", x === b);
   $("p1").hidden = b.dataset.p !== "1"; $("p0").hidden = b.dataset.p !== "0"; });
 const bar = (v, c, label) => `<div class="meter"><div class="track-bar"><i style="width:${Math.max(0, Math.min(100, v))}%;background:${c}"></i></div><b>${label}</b></div>`;
-const V1 = [["Meta Muse", "Meta", "#3b5bdb", "网页版"], ["Karpo", "Karpo", "#c2410c", "手机 App"], ["Rabbit OS3 · DeepSeek V4 Flash", "rabbit", "#7a4fa8", "待定"], ["Rabbit OS3 · GLM 5.1", "rabbit", "#4f7f86", "待定"], ["ChatGPT", "OpenAI", "", "待定"], ["Gemini", "Google", "", "待定"]];
+const V1 = [["Meta Muse", "Meta", "#002D64", "网页版"], ["Karpo", "Karpo", "#008CA0", "手机 App"], ["Rabbit OS3 · DeepSeek V4 Flash", "rabbit", "#5B7DB1", "待定"], ["Rabbit OS3 · GLM 5.1", "rabbit", "#7F96B8", "待定"], ["ChatGPT", "OpenAI", "", "待定"], ["Gemini", "Google", "", "待定"]];
 const TT = Object.fromEntries(DATA.tasks.map(t => [t.id, t]));
 function m2(p) {
   const g = RES2.filter(r => r.product === p && r.grade && !r.excluded); if (!g.length) return null;
@@ -489,6 +603,7 @@ const book = CS["订餐厅"], tick = CS["活动与票务"];
 $("rBody").innerHTML = `
 <p>2026 年 11 月 5 日，Errand Bench 用吃喝玩乐 · 纽约测试集的 8 道计分题，测试了 Meta Muse（网页版）和 Karpo（手机 App）。题目包括订餐厅、改预订、订 6 人生日聚餐、预订带狗的户外 brunch、买爵士演出票、预订热门餐厅 Tatiana、找今晚能去的酒吧和查询 Katz's 的营业信息。两款产品收到的自我介绍、任务原话和答案卡完全相同。</p>
 <p>在 Errand Bench 第一期榜单中，Meta Muse 总分 ${mu.score.toFixed(1)}，Karpo 总分 ${ka.score.toFixed(1)}，Muse 领先 ${(mu.score - ka.score).toFixed(1)} 分，两款产品都没有出现事实错误和闯祸。分差主要来自订餐厅类的 4 道题：Muse ${f1(book.mu.score)} 分，Karpo ${f1(book.ka.score)} 分，相差 ${f1(book.mu.score - book.ka.score)} 分；即时推荐和信息查询 2 道题，两款产品都是满分。</p>
+<p class="callout">第一期的差距集中在需要真实预订的题目上：<span class="hl">Muse 倾向于自己把事做完，Karpo 倾向于先给推荐、让用户选择。</span></p>
 <p>结合两款产品的对话记录，本期呈现出 3 个清晰的差异：</p>
 <ul>
   <li><b>Muse 更常自己做决定，Karpo 更常先给推荐再请用户选。</b>Karpo 8 道题中有 ${ka.asked} 道提过问，平均每题 ${ka.asks.toFixed(2)} 次；Muse 有 ${mu.asked} 道，平均 ${mu.asks.toFixed(2)} 次。两人周六晚餐这道题，Muse 没有问人数、时间、饮食和预算，直接订好了 Giano 7:30pm 的 2 人位；Karpo 先请用户确认换餐厅，又请用户选择时间。</li>
@@ -583,6 +698,8 @@ ${Object.keys(NM).map(id => `<tr><td><b>${id} ${NM[id]}</b><br><span class="tiny
 </tbody></table></div>
 
 <p>在 Errand Bench 第二期榜单中，Karpo 总分 ${f1(ka2.total)}，Meta Muse 总分 ${f1(mu2.total)}，Karpo 领先 ${gap(ka2.total, mu2.total)} 分。分差主要来自吃喝玩乐场景：Karpo ${sc(ka2, "fun")} 分，Muse ${sc(mu2, "fun")} 分。生活健康场景 Muse 领先（${sc(mu2, "health")} 比 ${sc(ka2, "health")}），工作场景两款产品接近（Muse ${sc(mu2, "work")}，Karpo ${sc(ka2, "work")}）。Karpo 办成 ${ka2.done} 道、部分办成 ${ka2.partial} 道，没有事实错误；Muse 办成 ${mu2.done} 道、部分办成 ${mu2.partial} 道、没办成 ${mu2.fail} 道，有 ${mu2.facts} 处事实错误。</p>
+<div class="stats"><div><b>${f1(ka2.total)}</b><span>Karpo 总分，第二期第 1</span></div><div><b>${f1(mu2.total)}</b><span>Meta Muse 总分</span></div><div><b class="r">3 / 3</b><span>Karpo 自己完成的真实预订</span></div><div><b class="r">0 / 3</b><span>Muse 不靠测试员介入完成的真实预订</span></div></div>
+<p class="callout">两款产品的差距不在推荐，而在最后一步：<span class="hl">谁能在订位平台上自己把预订做完，谁就拿到吃喝玩乐的分数。</span>Karpo 在 OpenTable 上做完了，Muse 在 Resy 的拦截和信用卡担保上停了下来。</p>
 <p>结合两款产品的对话记录，本期呈现出 3 个清晰的差异：</p>
 <ul>
   <li><b>Karpo 的 3 次真实预订全部完成，Muse 只在测试员介入后订成 1 次。</b>Karpo 在订餐厅、改预订、记住偏好三道题里都通过 OpenTable 订好了座位，改预订时确认号不变，说明是在原预订上修改的。Muse 推荐的 Claud 在 Resy 上订位，被 Resy 拦截；Little Owl 需要信用卡担保，Muse 停下来请用户自己填卡。Muse 唯一订成的 Gnoccheria，是测试员让它改订一家能直接预订的餐厅之后才订的。第一期 Karpo 也停在过 Resy 的手机号验证，这一期它选的餐厅都在 OpenTable 上。</li>
@@ -616,9 +733,9 @@ ${Object.keys(NM).map(id => `<tr><td><b>${id} ${NM[id]}</b></td>${["Meta Muse", 
 </ul>
 
 <h3 class="rh">结语</h3>
-<p>按 v1 的 10 道题，Karpo 的优势在执行：3 次真实预订都完成了，平均耗时比 Muse 少 ${((1 - ka2.secs / mu2.secs) * 100).toFixed(1)}%，工作题基本在半分钟内给出结果。Muse 的优势在细节：饮食记录说清楚了差多少，起草回复正确婉拒了 5pm，记住偏好时明确用上了反馈。两款产品共同的问题是不会主动问饮食限制，也都把跨对话记住的晚餐安排直接用在了工作回复里，婉拒了用户其实想去的团队晚餐。第一期 Muse 领先 Karpo，第二期 Karpo 反超，主要原因是这一期的订餐题都落在 OpenTable 上，Karpo 能自己订完，Muse 在 Resy 和信用卡担保上停了下来。</p>
+<p>按 v1 的 10 道题，Karpo 的优势在执行：3 次真实预订都完成了，平均耗时比 Muse 少 ${((1 - ka2.secs / mu2.secs) * 100).toFixed(1)}%，工作题基本在半分钟内给出结果。Muse 的优势在细节：饮食记录说清楚了差多少，起草回复正确婉拒了 5pm，记住偏好时明确用上了反馈。两款产品共同的问题是<span class="hl">不会主动问饮食限制</span>，也都<span class="hl">把跨对话记住的晚餐安排直接用在了工作回复里</span>，婉拒了用户其实想去的团队晚餐。第一期 Muse 领先 Karpo，第二期 Karpo 反超，主要原因是这一期的订餐题都落在 OpenTable 上，<span class="hl">Karpo 能自己订完，Muse 在 Resy 和信用卡担保上停了下来。</span></p>
 <h3 class="rh">Rabbit OS3：本期暂停测试</h3>
-<p>Rabbit OS3 原计划分别使用 GLM 5.1 和 DeepSeek V4 Flash 两个模型的 API key 各测一遍。11 月 8 日到 9 日测试期间，产品多次无法正常使用，本期暂停测试，不进入榜单。下面的问题来自 Rabbit OS3 在测试电脑上的本地日志和测试记录。</p>
+<p>Rabbit OS3 原计划分别使用 GLM 5.1 和 DeepSeek V4 Flash 两个模型的 API key 各测一遍。11 月 8 日到 9 日测试期间，产品多次无法正常使用，<span class="hl">本期暂停测试，不进入榜单。</span>下面的问题来自 Rabbit OS3 在测试电脑上的本地日志和测试记录。</p>
 <ul>
   <li><b>本地程序安装不稳定，多次安装失败。</b>Rabbit OS3 需要在电脑上安装一个本地程序（rabbit-agent），由它来执行订位、设提醒、写日历等操作。App 日志显示，10 月 29 日到 11 月 9 日之间安装至少失败了 6 次，原因包括安装脚本语法错误、程序启动失败，以及无法向 Rabbit 服务器注册。</li>
   <li><b>报错信息没有说明缺的是哪项系统权限。</b>本地程序需要“屏幕录制”和“控制 Chrome”两项 macOS 权限。第一次测试时这两项都没有开启，订位、设提醒、写日历都失败了，但产品只提示“权限检查没有通过”，没有说明缺的是哪一项、要去哪里开启。这个程序装在用户目录的隐藏文件夹里，在系统设置的权限列表里默认看不到，需要手动添加。</li>
