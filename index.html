@@ -1,4 +1,5 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body><title>Errand Bench</title>
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body><title>BAI PA Benchmark</title>
+<meta name="color-scheme" content="light only">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&display=swap">
@@ -15,18 +16,6 @@
   --body:"Noto Sans SC","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
   --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
 }
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#0d1311; --surface:#141c19; --sunk:#101815; --ink:#e4ebe7; --muted:#93a39b; --line:#26332e;
-  --accent:#57c497; --accent-ink:#06130e; --accent-soft:#163128;
-  --bubble:#1f2a26; --bubble-me:#2f8f69; --bubble-me-ink:#ffffff;
-  --l1:#57c497; --l2:#e2aa4c; --l3:#ff7a8c;
-  --ok:#4fc68b; --ok-soft:#163525; --bad:#ff7066; --bad-soft:#3b1c1a; --warn:#e2aa4c; --warn-soft:#382b12; color-scheme:dark}}
-:root[data-theme="dark"]{
-  --bg:#0d1311; --surface:#141c19; --sunk:#101815; --ink:#e4ebe7; --muted:#93a39b; --line:#26332e;
-  --accent:#57c497; --accent-ink:#06130e; --accent-soft:#163128;
-  --bubble:#1f2a26; --bubble-me:#2f8f69; --bubble-me-ink:#ffffff;
-  --l1:#57c497; --l2:#e2aa4c; --l3:#ff7a8c;
-  --ok:#4fc68b; --ok-soft:#163525; --bad:#ff7066; --bad-soft:#3b1c1a; --warn:#e2aa4c; --warn-soft:#382b12; color-scheme:dark}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
@@ -267,6 +256,7 @@ tr.pending td{color:var(--muted)}
 .deftable td:first-child{white-space:nowrap;font-weight:500}
 </style>
 <style>
+:root{color-scheme:light}
 /* BAI Capital theme: colours and type taken from the Personal Agent Research deck (navy #002D64, red #C00000, light blue #DCE3EE, grey #F0F0F0, Arial titles, Kaiti body)
    and emphasis rules from the BAI WeChat account (bold navy for key names, bold red for the firm and key conclusions, justified text, 0.5px tracking). */
 :root{
@@ -278,16 +268,6 @@ tr.pending td{color:var(--muted)}
   --body:"STKaiti","Kaiti SC","KaiTi","BiauKai","Noto Serif SC",serif;
   --mono:Arial,"Helvetica Neue","STKaiti","Kaiti SC","KaiTi",sans-serif;
 }
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#0B1626; --surface:#0F1E35; --sunk:#16263F; --ink:#E6ECF5; --muted:#A3B0C4; --line:#2A3C58; --rule:#3A4D6B;
-  --accent:#9DB9E6; --accent-ink:#0B1626; --accent-soft:#1B3255; --navy2:#7F9CCB; --hl:#FF7A7A; --hl-soft:#3A1C22; --brandred:#FF4D5E;
-  --bubble:#1B2B45; --bubble-me:#2D5596; --bubble-me-ink:#ffffff;
-  --ok:#9DB9E6; --ok-soft:#1B3255; --bad:#FF7A7A; --bad-soft:#3A1C22; --warn:#E8B565; --warn-soft:#3A2D14; color-scheme:dark}}
-:root[data-theme="dark"]{
-  --bg:#0B1626; --surface:#0F1E35; --sunk:#16263F; --ink:#E6ECF5; --muted:#A3B0C4; --line:#2A3C58; --rule:#3A4D6B;
-  --accent:#9DB9E6; --accent-ink:#0B1626; --accent-soft:#1B3255; --navy2:#7F9CCB; --hl:#FF7A7A; --hl-soft:#3A1C22; --brandred:#FF4D5E;
-  --bubble:#1B2B45; --bubble-me:#2D5596; --bubble-me-ink:#ffffff;
-  --ok:#9DB9E6; --ok-soft:#1B3255; --bad:#FF7A7A; --bad-soft:#3A1C22; --warn:#E8B565; --warn-soft:#3A2D14; color-scheme:dark}
 body{font:16px/1.85 var(--body);letter-spacing:.5px}
 h1,h2,h3{font-family:var(--display);font-weight:700;color:var(--accent);letter-spacing:0}
 h2{font-size:clamp(22px,3vw,30px)}
@@ -341,6 +321,7 @@ table.lb tbody tr:nth-child(even) td,table.res tbody tr:nth-child(even) td{backg
 .mono-badge{border-radius:2px;font-family:Arial,sans-serif}
 .prod b{font:700 15px/1.35 Arial,var(--body);letter-spacing:0;min-width:150px}
 .prod span{font-family:Arial,var(--body);letter-spacing:0}
+.prod .mono-badge{color:#fff;font:700 13px Arial,sans-serif}
 .meter .track-bar{border-radius:0;border:0;background:var(--sunk);height:10px}
 .meter .track-bar i{border-radius:0}
 .tabs button{border-radius:0;font-family:var(--body)}
@@ -379,7 +360,7 @@ table.res td:first-child{min-width:120px}
 
 
 <header class="nav page"><div class="col">
-  <a class="brand" href="#top"><span class="bai-logo"><em>BAI</em> <span>CAPITAL</span></span><i class="sep"></i>Errand Bench</a>
+  <a class="brand" href="#top"><span class="bai-logo"><em>BAI</em> <span>CAPITAL</span></span><i class="sep"></i>PA Benchmark</a>
   <nav aria-label="目录"><a href="#board">榜单</a><a href="#report2">第二期报告</a><a href="#report">第一期报告</a><a href="#compare">逐题对比</a><a href="#method">测评方法</a><a href="#log">更新记录</a></nav>
   <span class="ver" id="navVer"></span>
 </div></header>
@@ -388,8 +369,8 @@ table.res td:first-child{min-width:120px}
   <div class="col head">
     <div class="cover">
       <span class="eyebrow">Personal agent 产品测评 · 纽约</span>
-      <h1>Errand Bench</h1>
-      <p class="lede2">Errand Bench 是 BAI 资本发起的 personal agent 产品测评，测试这类产品能否完成普通用户的日常生活任务。每个产品收到相同的用户介绍和相同的任务原话，结果按任务的完整需求逐项检查。测试集 v1 共 10 道题，覆盖三个场景：吃喝玩乐（5 题，占总分 50%）、生活状态和健康（2 题，占 25%）、工作交叉（3 题，占 25%）。第一期只测了吃喝玩乐的 8 道题。</p>
+      <h1>BAI PA Benchmark</h1>
+      <p class="lede2">BAI PA Benchmark 是 <b style="color:#ff5a6a">BAI 资本</b>发起的 personal agent 产品测评，测试这类产品能否完成普通用户的日常生活任务。每个产品收到相同的用户介绍和相同的任务原话，结果按任务的完整需求逐项检查。测试集 v1 共 10 道题，覆盖三个场景：吃喝玩乐（5 题，占总分 50%）、生活状态和健康（2 题，占 25%）、工作交叉（3 题，占 25%）。第一期只测了吃喝玩乐的 8 道题。</p>
       <div class="facts" id="facts"></div>
     </div>
     <div class="cover-foot"><span class="bai-logo"><em>BAI</em> <span>CAPITAL</span></span></div>
@@ -435,7 +416,7 @@ table.res td:first-child{min-width:120px}
 
   <section class="band" id="report2"><div class="col">
     <div class="sechead">
-      <span class="eyebrow">Errand Bench 报告 · 第二期 · 2026.11.09</span>
+      <span class="eyebrow">BAI PA Benchmark 报告 · 第二期 · 2026.11.09</span>
       <h2 id="r2Title"></h2>
     </div>
     <div class="report" id="r2Body"></div>
@@ -443,7 +424,7 @@ table.res td:first-child{min-width:120px}
 
   <section class="band alt" id="report" style="margin-inline:-20px;padding-inline:20px"><div class="col">
     <div class="sechead">
-      <span class="eyebrow">Errand Bench 报告 · 第一期 · 2026.11.05</span>
+      <span class="eyebrow">BAI PA Benchmark 报告 · 第一期 · 2026.11.05</span>
       <h2 id="rTitle"></h2>
     </div>
     <div class="report" id="rBody"></div>
@@ -501,8 +482,8 @@ table.res td:first-child{min-width:120px}
 </main>
 
 <footer class="page"><div class="col">
-  <span><span class="bai-logo"><em>BAI</em> <span>CAPITAL</span></span> · Errand Bench · <span id="footVer"></span></span>
-  <span>Errand Bench 由 <b style="color:var(--brandred)">BAI 资本</b>发起，采用持续更新的测评方式，任务和榜单会随新产品、新场景陆续更新。</span>
+  <span><span class="bai-logo"><em>BAI</em> <span>CAPITAL</span></span> · BAI PA Benchmark · <span id="footVer"></span></span>
+  <span>BAI PA Benchmark 由 <b style="color:var(--brandred)">BAI 资本</b>发起，采用持续更新的测评方式，任务和榜单会随新产品、新场景陆续更新。</span>
 </div></footer>
 
 <script>
@@ -594,15 +575,15 @@ const CS = Object.fromEntries(CAT.map(([n, ids]) => [n, { mu: catScore("Meta Mus
 const avgOf = (p, ids) => ids.reduce((a, i) => a + R[p][i].seconds, 0) / ids.length;
 const bookNoT6 = { mu: avgOf("Meta Muse", ["C1-L3", "C1-F1", "C3-L3"]), ka: avgOf("Karpo", ["C1-L3", "C1-F1", "C3-L3"]) };
 const f1 = x => x.toFixed(1);
-$("rTitle").innerHTML = `<b>Muse 订餐领先，Karpo 更早把选择交给用户</b>｜Errand Bench 第一期报告`;
+$("rTitle").innerHTML = `<b>Muse 订餐领先，Karpo 更早把选择交给用户</b>｜BAI PA Benchmark 第一期报告`;
 const catRows = CAT.map(([n, ids, d]) => { const c = CS[n]; return `<tr><td><b>${n}</b><br><span class="tiny muted">${ids.length} 题：${d}</span></td>
   <td class="num">${f1(c.mu.score)}</td><td class="num">${c.mu.ok}/${c.mu.all}</td><td class="num">${mmss(c.mu.secs)}</td>
   <td class="num">${f1(c.ka.score)}</td><td class="num">${c.ka.ok}/${c.ka.all}</td><td class="num">${mmss(c.ka.secs)}</td>
   <td class="num">${Math.abs(c.mu.score - c.ka.score) < 0.05 ? "0" : (c.mu.score - c.ka.score > 0 ? "+" : "") + f1(c.mu.score - c.ka.score)}</td></tr>`; }).join("");
 const book = CS["订餐厅"], tick = CS["活动与票务"];
 $("rBody").innerHTML = `
-<p>2026 年 11 月 5 日，Errand Bench 用吃喝玩乐 · 纽约测试集的 8 道计分题，测试了 Meta Muse（网页版）和 Karpo（手机 App）。题目包括订餐厅、改预订、订 6 人生日聚餐、预订带狗的户外 brunch、买爵士演出票、预订热门餐厅 Tatiana、找今晚能去的酒吧和查询 Katz's 的营业信息。两款产品收到的自我介绍、任务原话和答案卡完全相同。</p>
-<p>在 Errand Bench 第一期榜单中，Meta Muse 总分 ${mu.score.toFixed(1)}，Karpo 总分 ${ka.score.toFixed(1)}，Muse 领先 ${(mu.score - ka.score).toFixed(1)} 分，两款产品都没有出现事实错误和闯祸。分差主要来自订餐厅类的 4 道题：Muse ${f1(book.mu.score)} 分，Karpo ${f1(book.ka.score)} 分，相差 ${f1(book.mu.score - book.ka.score)} 分；即时推荐和信息查询 2 道题，两款产品都是满分。</p>
+<p>2026 年 11 月 5 日，BAI PA Benchmark 用吃喝玩乐 · 纽约测试集的 8 道计分题，测试了 Meta Muse（网页版）和 Karpo（手机 App）。题目包括订餐厅、改预订、订 6 人生日聚餐、预订带狗的户外 brunch、买爵士演出票、预订热门餐厅 Tatiana、找今晚能去的酒吧和查询 Katz's 的营业信息。两款产品收到的自我介绍、任务原话和答案卡完全相同。</p>
+<p>在 BAI PA Benchmark 第一期榜单中，Meta Muse 总分 ${mu.score.toFixed(1)}，Karpo 总分 ${ka.score.toFixed(1)}，Muse 领先 ${(mu.score - ka.score).toFixed(1)} 分，两款产品都没有出现事实错误和闯祸。分差主要来自订餐厅类的 4 道题：Muse ${f1(book.mu.score)} 分，Karpo ${f1(book.ka.score)} 分，相差 ${f1(book.mu.score - book.ka.score)} 分；即时推荐和信息查询 2 道题，两款产品都是满分。</p>
 <p class="callout">第一期的差距集中在需要真实预订的题目上：<span class="hl">Muse 倾向于自己把事做完，Karpo 倾向于先给推荐、让用户选择。</span></p>
 <p>结合两款产品的对话记录，本期呈现出 3 个清晰的差异：</p>
 <ul>
@@ -647,7 +628,7 @@ $("rBody").innerHTML = `
 
 <h3 class="rh">结语</h3>
 <p>第一期的 8 道题里，两款产品在即时推荐和信息查询上表现相同，差距主要出现在需要真实预订的题目上。Muse 的做法是尽量自己做完，回复写全预订信息，代价是在个别平台上耗时很长；Karpo 的做法是先给推荐、让用户选择，并把登录、验证和付款交给用户，平均更快，但预订回复里缺少关键信息。两款产品都不会主动询问用户没有说出的条件，例如饮食限制和蛋糕。第二期测试集扩展到 10 道题，加入行程中改需求、记住偏好、饮食记录、每日提醒和工作日程类题目，会继续比较两款产品在这些方面的差异。</p>
-<p class="foot">Errand Bench 采用持续更新的测评方式，题目和榜单会随新产品、新场景陆续更新。第一期使用旧的计分方法，与第二期的分数不能直接比较。</p>`;
+<p class="foot">BAI PA Benchmark 采用持续更新的测评方式，题目和榜单会随新产品、新场景陆续更新。第一期使用旧的计分方法，与第二期的分数不能直接比较。</p>`;
 
 /* ---- conversation: Muse C3 ---- */
 const c3 = R["Meta Muse"]["C3-L3"];
@@ -680,9 +661,9 @@ $("convoVerdict").innerHTML = `<h3>判分：${VERD[c3.grade.status]}</h3>` + c3.
   const gap = (a, b) => (a - b).toFixed(1);
   const ka = Q.Karpo, mu = Q["Meta Muse"];
   const workSecs = (p) => ["W1", "W2", "W3"].reduce((a, id) => a + Q[p][id].seconds, 0) / 3;
-  $("r2Title").innerHTML = `<b>Karpo 订餐全部订成，Muse 健康题更稳</b>｜Errand Bench 第二期报告`;
+  $("r2Title").innerHTML = `<b>Karpo 订餐全部订成，Muse 健康题更稳</b>｜BAI PA Benchmark 第二期报告`;
   $("r2Body").innerHTML = `
-<p>2026 年 11 月 8 日和 9 日，Errand Bench 用测试集 v1 的 10 道题测试了 Meta Muse（网页版）和 Karpo（手机 App）。两款产品收到的自我介绍、任务原话和答案卡完全相同。Rabbit OS3 在测试期间多次无法正常使用，本期暂停测试，具体问题见本节最后。</p>
+<p>2026 年 11 月 8 日和 9 日，BAI PA Benchmark 用测试集 v1 的 10 道题测试了 Meta Muse（网页版）和 Karpo（手机 App）。两款产品收到的自我介绍、任务原话和答案卡完全相同。Rabbit OS3 在测试期间多次无法正常使用，本期暂停测试，具体问题见本节最后。</p>
 <p>和第一期只测订餐、买票、查询不同，v1 的 10 道题按三个场景测试 7 类能力：</p>
 <ul>
   <li><b>真实预订：</b>推荐餐厅后自己在订位平台上订好，改人数时在原预订上修改，不留下重复预订。</li>
@@ -697,7 +678,7 @@ $("convoVerdict").innerHTML = `<h3>判分：${VERD[c3.grade.status]}</h3>` + c3.
 ${Object.keys(NM).map(id => `<tr><td><b>${id} ${NM[id]}</b><br><span class="tiny muted">${id[0] === "E" ? "吃喝玩乐" : id[0] === "H" ? "生活健康" : "工作"}</span></td><td>${AB[id]}</td></tr>`).join("")}
 </tbody></table></div>
 
-<p>在 Errand Bench 第二期榜单中，Karpo 总分 ${f1(ka2.total)}，Meta Muse 总分 ${f1(mu2.total)}，Karpo 领先 ${gap(ka2.total, mu2.total)} 分。分差主要来自吃喝玩乐场景：Karpo ${sc(ka2, "fun")} 分，Muse ${sc(mu2, "fun")} 分。生活健康场景 Muse 领先（${sc(mu2, "health")} 比 ${sc(ka2, "health")}），工作场景两款产品接近（Muse ${sc(mu2, "work")}，Karpo ${sc(ka2, "work")}）。Karpo 办成 ${ka2.done} 道、部分办成 ${ka2.partial} 道，没有事实错误；Muse 办成 ${mu2.done} 道、部分办成 ${mu2.partial} 道、没办成 ${mu2.fail} 道，有 ${mu2.facts} 处事实错误。</p>
+<p>在 BAI PA Benchmark 第二期榜单中，Karpo 总分 ${f1(ka2.total)}，Meta Muse 总分 ${f1(mu2.total)}，Karpo 领先 ${gap(ka2.total, mu2.total)} 分。分差主要来自吃喝玩乐场景：Karpo ${sc(ka2, "fun")} 分，Muse ${sc(mu2, "fun")} 分。生活健康场景 Muse 领先（${sc(mu2, "health")} 比 ${sc(ka2, "health")}），工作场景两款产品接近（Muse ${sc(mu2, "work")}，Karpo ${sc(ka2, "work")}）。Karpo 办成 ${ka2.done} 道、部分办成 ${ka2.partial} 道，没有事实错误；Muse 办成 ${mu2.done} 道、部分办成 ${mu2.partial} 道、没办成 ${mu2.fail} 道，有 ${mu2.facts} 处事实错误。</p>
 <div class="stats"><div><b>${f1(ka2.total)}</b><span>Karpo 总分，第二期第 1</span></div><div><b>${f1(mu2.total)}</b><span>Meta Muse 总分</span></div><div><b class="r">3 / 3</b><span>Karpo 自己完成的真实预订</span></div><div><b class="r">0 / 3</b><span>Muse 不靠测试员介入完成的真实预订</span></div></div>
 <p class="callout">两款产品的差距不在推荐，而在最后一步：<span class="hl">谁能在订位平台上自己把预订做完，谁就拿到吃喝玩乐的分数。</span>Karpo 在 OpenTable 上做完了，Muse 在 Resy 的拦截和信用卡担保上停了下来。</p>
 <p>结合两款产品的对话记录，本期呈现出 3 个清晰的差异：</p>
@@ -745,7 +726,7 @@ ${Object.keys(NM).map(id => `<tr><td><b>${id} ${NM[id]}</b></td>${["Meta Muse", 
   <li><b>本地程序每 2 分钟读取一次不存在的配置文件。</b>本地程序会定期读取一个外部工具的配置文件，这个文件在测试电脑上一直不存在，每次读取都报错。这和日历、提醒功能不可用是否有关，目前无法确定。</li>
 </ul>
 <p>在权限问题出现之前，Rabbit OS3（GLM 5.1）完成了 6 道不需要在电脑上执行操作的题。工作类题目完成得较好：从邮件整理日程、发现时间冲突两道题都办成了。行程类题目没有按用户偏好安排：推荐了用户明确说过不想去的博物馆。和 Meta Muse 一样，Rabbit 也把一个因为权限问题没有订成的餐厅当成了已有安排，在起草回复时婉拒了团队晚餐。这 6 道题的结果只作参考，不计分。</p>
-<p class="foot">Errand Bench 采用持续更新的测评方式，题目和榜单会随新产品、新场景陆续更新。ChatGPT、Gemini 等产品的第二期测试会陆续加入。</p>`;
+<p class="foot">BAI PA Benchmark 采用持续更新的测评方式，题目和榜单会随新产品、新场景陆续更新。ChatGPT、Gemini 等产品的第二期测试会陆续加入。</p>`;
 })();
 
 $("logList").innerHTML = [
