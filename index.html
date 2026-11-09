@@ -356,7 +356,13 @@ table.res td:first-child{min-width:120px}
 .stats span{font-size:13.5px;color:var(--muted);line-height:1.6}
 
 /* multi-page views + gradients */
-body{background:radial-gradient(900px 560px at 100% 0%,rgba(65,95,140,.38) 0%,rgba(65,95,140,0) 65%),radial-gradient(700px 520px at 0% 42%,rgba(91,125,177,.22) 0%,rgba(91,125,177,0) 65%),radial-gradient(600px 420px at 100% 85%,rgba(192,0,0,.07) 0%,rgba(192,0,0,0) 65%),linear-gradient(180deg,#D5DFEC 0%,#EEF2F8 38%,#F8FAFD 75%,#FFFFFF 100%);background-attachment:fixed;min-height:100vh}
+body{background:
+  radial-gradient(circle at 1px 1px,rgba(0,45,100,.07) 1px,transparent 1.4px) 0 0/22px 22px,
+  radial-gradient(1000px 700px at 100% 0%,rgba(65,95,140,.30) 0%,rgba(65,95,140,0) 70%),
+  radial-gradient(900px 800px at 0% 60%,rgba(91,125,177,.20) 0%,rgba(91,125,177,0) 70%),
+  radial-gradient(800px 600px at 100% 100%,rgba(192,0,0,.06) 0%,rgba(192,0,0,0) 70%),
+  linear-gradient(165deg,#DCE4EF 0%,#EDF1F7 35%,#F4F6FA 60%,#E9EEF5 100%);
+  background-attachment:fixed;min-height:100vh}
 .nav{background:rgba(255,255,255,.82)}
 .nav nav a[aria-current]{color:var(--accent);font-weight:700;box-shadow:inset 0 -2px 0 var(--accent)}
 .nav nav a{padding-block:17px}
@@ -382,8 +388,7 @@ body{background:radial-gradient(900px 560px at 100% 0%,rgba(65,95,140,.38) 0%,rg
 .pcard .go{margin-top:auto;font:700 14px Arial,var(--body);color:var(--hl)}
 table.lb td a,.report a{color:var(--accent)}
 section.band{background:transparent!important}
-#board,#pages{background:linear-gradient(180deg,rgba(255,255,255,.75) 0%,rgba(220,227,238,.55) 100%)!important;border-top:1px solid rgba(0,45,100,.12)}
-#pages{background:linear-gradient(180deg,rgba(220,227,238,.6) 0%,rgba(255,255,255,.4) 100%)!important}
+#board,#pages{background:transparent!important;border-top:1px solid rgba(0,45,100,.12)}
 .tablewrap,.compare{background:#fff}
 @media (max-width:900px){.cards{grid-template-columns:1fr}}
 .report>*{min-width:0;max-width:100%}
