@@ -354,18 +354,53 @@ table.res td:first-child{min-width:120px}
 .stats b{font:400 24px Arial,sans-serif;color:var(--accent);letter-spacing:0}
 .stats b.r{color:var(--hl)}
 .stats span{font-size:13.5px;color:var(--muted);line-height:1.6}
+
+/* multi-page views + gradients */
+body{background:radial-gradient(1100px 520px at 88% -8%,#DCE3EE 0%,rgba(220,227,238,0) 62%),radial-gradient(900px 600px at -12% 38%,#EEF2F8 0%,rgba(238,242,248,0) 60%),linear-gradient(180deg,#ffffff 0%,#F7F9FC 100%);background-attachment:fixed;min-height:100vh}
+.nav{background:rgba(255,255,255,.82)}
+.nav nav a[aria-current]{color:var(--accent);font-weight:700;box-shadow:inset 0 -2px 0 var(--accent)}
+.nav nav a{padding-block:17px}
+.cover{background:radial-gradient(700px 360px at 92% 10%,rgba(91,125,177,.55) 0%,rgba(91,125,177,0) 70%),linear-gradient(120deg,#002D64 0%,#0E2E60 45%,#24497F 100%)}
+.cover::after{background:#03275A}
+.pbanner{margin-top:28px;margin-bottom:40px;position:relative;color:#fff;padding:34px clamp(20px,5vw,48px) 38px;display:flex;flex-direction:column;gap:10px;background:radial-gradient(600px 280px at 95% 0%,rgba(91,125,177,.55) 0%,rgba(91,125,177,0) 70%),linear-gradient(120deg,#002D64 0%,#0E2E60 50%,#24497F 100%)}
+.pbanner::after{content:"";position:absolute;left:0;bottom:-28px;width:9%;min-width:40px;height:28px;background:#03275A;clip-path:polygon(0 0,100% 0,0 100%)}
+.pbanner h1{color:#fff;font-weight:400;font-size:clamp(30px,4.6vw,44px)}
+.pbanner p{color:#DCE3EE}
+.pbanner .eyebrow{color:#AFBED2}
+.pbanner .back{color:#DCE3EE;text-decoration:none;font:14px Arial,var(--body);width:max-content}
+.pbanner .back:hover{color:#fff}
+.pagefoot{display:flex;justify-content:space-between;gap:16px;padding-block:8px 64px;border-top:1px solid var(--rule);padding-top:20px}
+.pagefoot a{text-decoration:none;font:700 15px Arial,var(--body);color:var(--accent)}
+.pagefoot a:hover{color:var(--hl)}
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.pcard{position:relative;display:flex;flex-direction:column;gap:10px;padding:26px 26px 22px;text-decoration:none;color:var(--ink);background:linear-gradient(160deg,#ffffff 0%,#F2F5FA 100%);border:1px solid var(--line);border-top:0;transition:transform .15s,box-shadow .15s}
+.pcard::before{content:"";position:absolute;inset:0 0 auto 0;height:4px;background:linear-gradient(90deg,#002D64,#415F8C 70%,#C00000)}
+.pcard:hover{transform:translateY(-2px);box-shadow:0 18px 40px -24px rgba(0,45,100,.45)}
+.pcard .k{font:700 12px Arial,sans-serif;letter-spacing:.08em;color:var(--navy2)}
+.pcard h3{font-size:19px;line-height:1.45}
+.pcard p{font-size:15px;color:var(--muted);text-align:justify}
+.pcard .go{margin-top:auto;font:700 14px Arial,var(--body);color:var(--hl)}
+table.lb td a,.report a{color:var(--accent)}
+section.band{background:transparent!important}
+.tablewrap,.compare{background:#fff}
+@media (max-width:900px){.cards{grid-template-columns:1fr}}
+.report>*{min-width:0;max-width:100%}
+.col{min-width:0}
+@media (max-width:520px){.nav .col{height:auto;flex-wrap:wrap;gap:0 14px;padding-top:10px}.nav nav{display:flex!important;order:3;flex-basis:100%;gap:16px}.nav nav a{padding-block:10px}.brand .sep,.brand{font-size:14px}}
+
 @media (max-width:900px){.boxes{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}.cover .facts div{padding-right:18px;margin-right:18px}}
 @media (max-width:520px){.cover .facts{display:grid;grid-template-columns:1fr 1fr;gap:14px}.cover .facts div{border-right:0;margin:0;padding:0}}
 </style>
 
 
 <header class="nav page"><div class="col">
-  <a class="brand" href="#top"><span class="bai-logo"><em>BAI</em> <span>CAPITAL</span></span><i class="sep"></i>PA Benchmark</a>
-  <nav aria-label="目录"><a href="#board">榜单</a><a href="#report2">第二期报告</a><a href="#report">第一期报告</a><a href="#compare">逐题对比</a><a href="#method">测评方法</a><a href="#log">更新记录</a></nav>
+  <a class="brand" href="#/"><span class="bai-logo"><em>BAI</em> <span>CAPITAL</span></span><i class="sep"></i>PA Benchmark</a>
+  <nav aria-label="页面"><a href="#/" data-go="home">首页</a><a href="#/report2" data-go="report2">第二期报告</a><a href="#/report1" data-go="report1">第一期报告</a><a href="#/method" data-go="method">测评方法</a><a href="#/log" data-go="log">更新记录</a></nav>
   <span class="ver" id="navVer"></span>
 </div></header>
 
 <main class="page" id="top">
+<div class="view" data-view="home">
   <div class="col head">
     <div class="cover">
       <span class="eyebrow">Personal agent 产品测评 · 纽约</span>
@@ -414,6 +449,18 @@ table.res td:first-child{min-width:120px}
     </div>
   </div></section>
 
+  <section class="band" id="pages"><div class="col">
+    <div class="sechead"><span class="eyebrow">Reports</span><h2>报告与方法</h2><p>每期测试结束后发布一份报告，写清楚每个产品做成了什么、卡在哪里。</p></div>
+    <div class="cards">
+      <a class="pcard" href="#/report2"><span class="k">第二期 · 2026.11.09</span><h3>Karpo 订餐全部订成，Muse 健康题更稳</h3><p>10 道题，覆盖吃喝玩乐、生活健康、工作三个场景。Karpo 65.5，Meta Muse 60.1；Rabbit OS3 本期暂停。</p><span class="go">阅读报告 →</span></a>
+      <a class="pcard" href="#/report1"><span class="k">第一期 · 2026.11.05</span><h3>Muse 订餐领先，Karpo 更早把选择交给用户</h3><p>8 道吃喝玩乐题，含逐题对比和一段完整对话记录。Meta Muse 83.5，Karpo 73.7。</p><span class="go">阅读报告 →</span></a>
+      <a class="pcard" href="#/method"><span class="k">测评方法</span><h3>所有产品使用相同的用户、输入和判分标准</h3><p>用户设定、答案卡、真实预订规则、判分方法，以及工作题为什么不连接邮箱。</p><span class="go">查看方法 →</span></a>
+      <a class="pcard" href="#/log"><span class="k">局限与更新记录</span><h3>当前版本的局限和每次更新</h3><p>单次测试的偶然性、记录不完整的题目，以及测试集从 v0.1 到 v1.1 的变化。</p><span class="go">查看记录 →</span></a>
+    </div>
+  </div></section>
+</div>
+<div class="view" data-view="report2" hidden>
+  <div class="col"><div class="pbanner"><a class="back" href="#/">← 返回首页</a><span class="eyebrow">BAI PA Benchmark 报告 · 第二期</span><h1>第二期报告</h1><p>Meta Muse 与 Karpo · 测试集 v1 · 10 道题</p></div></div>
   <section class="band" id="report2"><div class="col">
     <div class="sechead">
       <span class="eyebrow">BAI PA Benchmark 报告 · 第二期 · 2026.11.09</span>
@@ -422,7 +469,11 @@ table.res td:first-child{min-width:120px}
     <div class="report" id="r2Body"></div>
   </div></section>
 
-  <section class="band alt" id="report" style="margin-inline:-20px;padding-inline:20px"><div class="col">
+  <div class="col pagefoot"><a class="back2" href="#/">← 返回首页</a><a class="next" href="#/report1">第一期报告 →</a></div>
+</div>
+<div class="view" data-view="report1" hidden>
+  <div class="col"><div class="pbanner"><a class="back" href="#/">← 返回首页</a><span class="eyebrow">BAI PA Benchmark 报告 · 第一期</span><h1>第一期报告</h1><p>Meta Muse 与 Karpo · 吃喝玩乐 · 8 道题</p></div></div>
+  <section class="band" id="report" style="margin-inline:-20px;padding-inline:20px"><div class="col">
     <div class="sechead">
       <span class="eyebrow">BAI PA Benchmark 报告 · 第一期 · 2026.11.05</span>
       <h2 id="rTitle"></h2>
@@ -445,6 +496,10 @@ table.res td:first-child{min-width:120px}
     <div class="convo"><div class="phone" id="convoPhone"></div><aside class="verdict" id="convoVerdict"></aside></div>
   </div></section>
 
+  <div class="col pagefoot"><a class="back2" href="#/">← 返回首页</a><a class="next" href="#/method">测评方法 →</a></div>
+</div>
+<div class="view" data-view="method" hidden>
+  <div class="col"><div class="pbanner"><a class="back" href="#/">← 返回首页</a><span class="eyebrow">Methodology</span><h1>测评方法</h1><p>相同的用户、相同的输入、相同的判分标准</p></div></div>
   <section class="band" id="method"><div class="col">
     <div class="sechead"><span class="eyebrow">测评方法</span><h2>所有产品使用相同的用户、输入和判分标准</h2></div>
     <ol class="plain">
@@ -459,6 +514,10 @@ table.res td:first-child{min-width:120px}
     </ol>
   </div></section>
 
+  <div class="col pagefoot"><a class="back2" href="#/">← 返回首页</a><a class="next" href="#/log">局限与更新记录 →</a></div>
+</div>
+<div class="view" data-view="log" hidden>
+  <div class="col"><div class="pbanner"><a class="back" href="#/">← 返回首页</a><span class="eyebrow">Limitations & Changelog</span><h1>局限与更新记录</h1><p>当前版本的局限，以及测试集的每次更新</p></div></div>
   <section class="band" id="log"><div class="col two">
     <div style="display:flex;flex-direction:column;gap:18px">
       <span class="eyebrow">局限</span>
@@ -479,6 +538,8 @@ table.res td:first-child{min-width:120px}
       <div class="log" id="logList"></div>
     </div>
   </div></section>
+  <div class="col pagefoot"><a class="back2" href="#/">← 返回首页</a><a class="next" href="#/report2">第二期报告 →</a></div>
+</div>
 </main>
 
 <footer class="page"><div class="col">
@@ -547,7 +608,7 @@ $("badge").textContent = `第二期完成 ${V1M.filter(x => x.m && x.m.n === 10)
 $("lbV1").innerHTML = V1M.map(({ v: [p, o, c, e], m }) => m ? `<tr${m.n < 10 ? ' class="pending"' : ""}><td class="rank">${m.n < 10 ? "—" : ++rk}</td><td><div class="prod"><span class="mono-badge" style="background:${c}">${esc(p.slice(0, 2).toUpperCase())}</span><div><b>${esc(p)}</b><span>${esc(o)}${m.n < 10 ? ` · 部分结果，已测 ${m.n}/10 题` : ""}</span></div></div></td>
     <td>${m.n < 10 ? `<span class="small">待补测</span>` : bar(m.total, "var(--accent)", m.total.toFixed(1))}</td>${DATA.scenarios.map(x => `<td class="num">${m.scn[x.id] == null ? "—" : m.scn[x.id].toFixed(1)}</td>`).join("")}
     <td class="num">${mmss(m.secs)}</td><td class="num">${m.asks.toFixed(2)} 次</td><td class="num">${m.facts}</td><td class="num">${m.inc}</td><td class="num">${m.na}</td><td>${esc(m.entry || e)}</td></tr>`
-  : `<tr class="pending"><td class="rank">—</td><td><div class="prod"><span class="mono-badge" style="background:${c || "var(--muted)"}">${esc(p.slice(0, 2).toUpperCase())}</span><div><b>${esc(p)}</b><span>${esc(o)}</span></div></div></td><td colspan="9">${PAUSED.has(p) ? `本期暂停测试：产品在测试期间无法正常使用，见下方报告` : "待测"}</td><td>${esc(PAUSED.has(p) ? "Mac 电脑 App" : e)}</td></tr>`).join("");
+  : `<tr class="pending"><td class="rank">—</td><td><div class="prod"><span class="mono-badge" style="background:${c || "var(--muted)"}">${esc(p.slice(0, 2).toUpperCase())}</span><div><b>${esc(p)}</b><span>${esc(o)}</span></div></div></td><td colspan="9">${PAUSED.has(p) ? `本期暂停测试：产品在测试期间无法正常使用，<a href="#/report2">见第二期报告</a>` : "待测"}</td><td>${esc(PAUSED.has(p) ? "Mac 电脑 App" : e)}</td></tr>`).join("");
 
 $("lbBody").innerHTML = [...PRODUCTS].sort((a, b) => M[b.id].score - M[a.id].score).map((p, i) => { const m = M[p.id];
   return `<tr><td class="rank">${i + 1}</td><td><div class="prod"><span class="mono-badge" style="background:${p.color}">${p.tag}</span><div><b>${esc(p.id)}</b><span>${esc(p.org)}</span></div></div></td>
@@ -738,5 +799,16 @@ $("logList").innerHTML = [
   ["", "v0.1 · 2026.11.04", "发布吃喝玩乐 · 纽约测试集初版。"],
   ["", "计划", "用 v1 测试集测 Meta Muse、Karpo、Rabbit OS3、ChatGPT、Gemini；尝试在虚拟机中统一运行环境。"]
 ].map(([c, v, t]) => `<div class="${c}"><b>${esc(v)}</b><span class="small muted">${esc(t)}</span></div>`).join("");
+
+/* ---- router: each section is its own page ---- */
+function route() {
+  const v = (location.hash.match(/^#\/(\w+)/) || [])[1] || "home";
+  const name = document.querySelector(`.view[data-view="${v}"]`) ? v : "home";
+  for (const el of document.querySelectorAll(".view")) el.hidden = el.dataset.view !== name;
+  for (const a of document.querySelectorAll(".nav nav a")) a.toggleAttribute("aria-current", a.dataset.go === name);
+  window.scrollTo({ top: 0, behavior: "instant" });
+}
+addEventListener("hashchange", route); route();
+addEventListener("load", () => window.scrollTo({ top: 0, behavior: "instant" }));
 </script>
 </body></html>
