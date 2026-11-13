@@ -594,7 +594,7 @@ $("trackTabs").addEventListener("click", e => { const b = e.target.closest("[dat
   for (const x of $("trackTabs").querySelectorAll("button")) x.setAttribute("aria-pressed", x === b);
   $("p1").hidden = b.dataset.p !== "1"; $("p0").hidden = b.dataset.p !== "0"; });
 const bar = (v, c, label) => `<div class="meter"><div class="track-bar"><i style="width:${Math.max(0, Math.min(100, v))}%;background:${c}"></i></div><b>${label}</b></div>`;
-const V1 = [["Meta Muse", "Meta", "#002D64", "网页版"], ["Karpo", "Karpo", "#008CA0", "手机 App"], ["Instinct", "Instinct", "#C9832B", "iMessage"], ["Rabbit OS3 · DeepSeek V4 Flash", "rabbit", "#5B7DB1", "待定"], ["Rabbit OS3 · GLM 5.1", "rabbit", "#7F96B8", "待定"], ["ChatGPT", "OpenAI", "", "待定"], ["Gemini", "Google", "", "待定"]];
+const V1 = [["Meta Muse", "Meta", "#002D64", "网页版"], ["Karpo", "Karpo", "#008CA0", "手机 App"], ["Instinct", "Instinct", "#C9832B", "iMessage"], ["Today AI", "Today", "#6B4FA0", "手机 App"], ["Rabbit OS3 · DeepSeek V4 Flash", "rabbit", "#5B7DB1", "待定"], ["Rabbit OS3 · GLM 5.1", "rabbit", "#7F96B8", "待定"], ["ChatGPT", "OpenAI", "", "待定"], ["Gemini", "Google", "", "待定"]];
 const TT = Object.fromEntries(DATA.tasks.map(t => [t.id, t]));
 function m2(p) {
   const g = RES2.filter(r => r.product === p && r.grade && !r.excluded); if (!g.length) return null;
